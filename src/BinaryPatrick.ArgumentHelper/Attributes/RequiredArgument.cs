@@ -2,7 +2,7 @@
 
 namespace BinaryPatrick.ArgumentHelper;
 
-public class RequiredArgumentAttribute<T> : ArgumentAttribute<T>
+public class RequiredArgumentAttribute<T> : ArgumentAttribute<T> where T : struct
 {
     public RequiredArgumentAttribute()
     {

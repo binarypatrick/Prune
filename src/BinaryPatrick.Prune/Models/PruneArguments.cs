@@ -25,9 +25,12 @@ internal class PruneArguments
     [OptionalArgument<uint>(ShortName = "y", LongName = "keep-yearly", Default = 0, Description = "Number of yearly archives to keep")]
     public uint Years { get; set; } = 0;
 
-    [OptionalArgument<string>(ShortName = "p", LongName = "prefix", Default = null, Description = "File prefix to use when finding archives")]
+    [OptionalArgument<string>(ShortName = "p", LongName = "prefix", Description = "File prefix to use when finding archives")]
     public string? FilePrefix { get; set; }
 
-    [OptionalArgument<string>(ShortName = "e", LongName = "ext", Default = null, Description = "File extension to use when finding archives")]
+    [OptionalArgument<string>(ShortName = "e", LongName = "ext", Description = "File extension to use when finding archives")]
     public string? FileExtension { get; set; }
+
+    [OptionalArgument<string>(LongName = "dir", Description = "Directory location of the archives. Default is current directory.")]
+    public string? Directory { get; set; } = Environment.CurrentDirectory;
 }
