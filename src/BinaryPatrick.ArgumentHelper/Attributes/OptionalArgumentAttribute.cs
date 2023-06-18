@@ -2,10 +2,18 @@
 
 namespace BinaryPatrick.ArgumentHelper;
 
-public class OptionalArgumentAttribute<T> : ArgumentAttribute<T> where T : struct
+[AttributeUsage(AttributeTargets.Property)]
+public class OptionalArgumentAttribute : ArgumentAttribute
 {
-    public OptionalArgumentAttribute()
+    public OptionalArgumentAttribute(string fullName, string description) : base(fullName, description)
     {
         IsRequired = false;
+    }
+
+    public string? ShortName { get; init; }
+
+    internal override bool HasMatchingFlag(string? flag, StringComparison stringComparison = StringComparison.Ordinal)
+    {
+        return IsMatchingString(ShortName, flag, stringComparison) || IsMatchingString(FullName, flag, stringComparison);
     }
 }
