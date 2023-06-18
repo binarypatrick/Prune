@@ -1,6 +1,6 @@
-﻿using BinPat.ArgumentHelper.Attributes;
+﻿using BinaryPatrick.ArgumentHelper;
 
-namespace BinPat.Prune.Models;
+namespace BinaryPatrick.Prune.Models;
 
 internal class PruneArguments
 {

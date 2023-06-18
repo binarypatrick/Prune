@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BinPat.ArgumentHelper\BinPat.ArgumentHelper.csproj" />
+    <ProjectReference Include="..\BinaryPatrick.ArgumentHelper\BinaryPatrick.ArgumentHelper.csproj" />
   </ItemGroup>
 
 </Project>

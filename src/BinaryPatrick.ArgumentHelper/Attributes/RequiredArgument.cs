@@ -1,6 +1,6 @@
-﻿using BinPat.ArgumentHelper.Attributes;
+﻿using BinaryPatrick.ArgumentHelper.Attributes;
 
-namespace BinPat.ArgumentHelper;
+namespace BinaryPatrick.ArgumentHelper;
 
 public class RequiredArgumentAttribute<T> : ArgumentAttribute<T>
 {

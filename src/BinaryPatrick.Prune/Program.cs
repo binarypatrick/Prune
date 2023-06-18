@@ -1,4 +1,4 @@
-﻿namespace BinPat.Prune;
+﻿namespace BinaryPatrick.Prune;
 
 internal class Program
 {

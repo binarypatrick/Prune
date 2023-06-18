@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinPat.Prune", "src\BinPat.Prune\BinPat.Prune.csproj", "{F99DE3F2-EC3B-4B64-8295-EFC13137C570}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryPatrick.Prune", "src\BinaryPatrick.Prune\BinaryPatrick.Prune.csproj", "{F99DE3F2-EC3B-4B64-8295-EFC13137C570}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinPat.ArgumentHelper", "src\BinPat.ArgumentHelper\BinPat.ArgumentHelper.csproj", "{023B12FD-4F5F-4543-A32B-C1907A5D66C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryPatrick.ArgumentHelper", "src\BinaryPatrick.ArgumentHelper\BinaryPatrick.ArgumentHelper.csproj", "{023B12FD-4F5F-4543-A32B-C1907A5D66C5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0E81F046-9FF6-4F9D-AA22-8FC614916E83}"
 EndProject
