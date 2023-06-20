@@ -6,8 +6,8 @@ namespace BinaryPatrick.ArgumentHelper.Services;
 public class ArgumentParser<T> where T : class, new()
 {
     private static readonly string[] HelpFlags = new string[] { "--help", "-?" };
-    private static readonly RequiredArgument[] requiredArguments = GetRequiredArguments();
-    private static readonly OptionalArgument[] optionalArguments = GetOptionalArguments();
+    private static readonly RequiredProperty[] requiredProperties = GetRequiredArguments();
+    private static readonly OptionalProperty[] optionalProperties = GetOptionalArguments();
 
     private readonly ConsoleHelper consoleHelper;
 
@@ -24,33 +24,8 @@ public class ArgumentParser<T> where T : class, new()
         ExitOnTooFewArguments(arguments);
 
         T obj = new T();
-
-        foreach ((RequiredArgument property, string value) in requiredArguments.Zip(arguments[0..requiredArguments.Length]))
-        {
-            bool isSet = property.TrySetValue(obj, value!);
-            if (!isSet)
-            {
-                ExitWithError($"Invalid argument value given. '{value}' is not a valid argument for '{property!.ArgumentAttribute.FullName}'.");
-            }
-        }
-
-        Dictionary<string, string?> remainingArguments = new Dictionary<string, string?>();
-        arguments[requiredArguments.Length..].Aggregate((a, b) => AggregateArguments(remainingArguments, a, b));
-
-        foreach (KeyValuePair<string, string?> argument in remainingArguments)
-        {
-            OptionalArgument? property = optionalArguments.FirstOrDefault(x => x.ArgumentAttribute.HasMatchingFlag(argument.Key));
-            if (property is null)
-            {
-                ExitWithError($"Unknown argument {argument.Key}");
-            }
-
-            bool isSet = property!.TrySetValue(obj, argument.Value!);
-            if (!isSet)
-            {
-                ExitWithError($"Invalid argument value given. '{argument.Value}' is not a valid argument for '{property!.ArgumentAttribute.FullName}'.");
-            }
-        }
+        TrySetRequiredProperties(obj, arguments[..requiredProperties.Length]);
+        TrySetOptionalProperties(obj, arguments[requiredProperties.Length..]);
 
         return obj;
     }
@@ -58,15 +33,14 @@ public class ArgumentParser<T> where T : class, new()
     public void ShowHelpText()
     {
         T obj = new T();
-
-        string requiredNames = string.Join(" ", requiredArguments.Select(x => x.ArgumentAttribute.FullName.ToUpper()));
+        string requiredNames = string.Join(" ", requiredProperties.Select(x => x.ArgumentAttribute.FullName.ToUpper()));
         consoleHelper.WriteHeader($"Usage: {Process.GetCurrentProcess().ProcessName} {requiredNames} [OPTIONS]");
         consoleHelper.WriteText("Prune archives to save space");
 
-        if (requiredArguments.Any())
+        if (requiredProperties.Any())
         {
             consoleHelper.WriteHeader("Arguments:");
-            foreach (RequiredArgument property in requiredArguments)
+            foreach (RequiredProperty property in requiredProperties)
             {
                 string fullName = property.ArgumentAttribute.FullName.ToUpper();
                 consoleHelper.WriteText($"{fullName}  {property.ArgumentAttribute.Description}  [required]");
@@ -75,14 +49,13 @@ public class ArgumentParser<T> where T : class, new()
 
         consoleHelper.WriteHeader("Options:");
         consoleHelper.WriteFlags(HelpFlags[0].TrimStart('-'), HelpFlags[1].TrimStart('-'), "Show this message and exit", null);
-        foreach (OptionalArgument property in optionalArguments)
+        foreach (OptionalProperty property in optionalProperties)
         {
-            consoleHelper.WriteFlags(property.ArgumentAttribute.FullName, property.ArgumentAttribute.ShortName, property.ArgumentAttribute.Description, property.PropertyInfo.GetValue(obj)?.ToString());
+            consoleHelper.WriteFlags(property.ArgumentAttribute.FullName, property.ArgumentAttribute.ShortFlag, property.ArgumentAttribute.Description, property.PropertyInfo.GetValue(obj)?.ToString());
         }
-
     }
 
-    private static RequiredArgument[] GetRequiredArguments()
+    private static RequiredProperty[] GetRequiredArguments()
     {
         return typeof(T).GetProperties()
             .Select(x => x.GetRequiredArgumentProperty())
@@ -91,7 +64,7 @@ public class ArgumentParser<T> where T : class, new()
             .ToArray()!;
     }
 
-    private static OptionalArgument[] GetOptionalArguments()
+    private static OptionalProperty[] GetOptionalArguments()
     {
         return typeof(T).GetProperties()
             .Select(x => x.GetOptionalArgumentProperty())
@@ -100,9 +73,40 @@ public class ArgumentParser<T> where T : class, new()
             .ToArray()!;
     }
 
+    private void TrySetRequiredProperties(T obj, string[] arguments)
+    {
+        foreach ((RequiredProperty property, string value) in requiredProperties.Zip(arguments))
+        {
+            bool isSet = property.TrySetValue(obj, value!);
+            if (!isSet)
+            {
+                ExitWithError($"Invalid argument value given. '{value}' is not a valid argument for '{property!.ArgumentAttribute.FullName}'.");
+            }
+        }
+    }
+
+    private void TrySetOptionalProperties(T obj, string[] arguments)
+    {
+        IEnumerable<ArgumentPair> pairs = GetPairs(arguments);
+        foreach (ArgumentPair pair in pairs)
+        {
+            OptionalProperty? property = optionalProperties.FirstOrDefault(x => x.ArgumentAttribute.HasMatchingFlag(pair.Flag));
+            if (property is null)
+            {
+                ExitWithError($"Unknown argument {pair.Flag}");
+            }
+
+            bool isSet = property!.TrySetValue(obj, pair.Value!);
+            if (!isSet)
+            {
+                ExitWithError($"Invalid argument value given. '{pair.Value}' is not a valid argument for '{property!.ArgumentAttribute.FullName}'.");
+            }
+        }
+    }
+
     private void ExitOnTooFewArguments(string[] arguments)
     {
-        if (arguments.Length >= requiredArguments.Count())
+        if (arguments.Length >= requiredProperties.Count())
         {
             return;
         }
@@ -131,25 +135,29 @@ public class ArgumentParser<T> where T : class, new()
         Environment.Exit(0);
     }
 
-    private string AggregateArguments(Dictionary<string, string?> remainingArguments, string a, string b)
+    private List<ArgumentPair> GetPairs(string[] arguments)
     {
-        if (a.StartsWith('-') && !remainingArguments.ContainsKey(a))
+        List<ArgumentPair> pairs = new List<ArgumentPair>();
+        ArgumentPair? current = null;
+        for (int i = 0; i < arguments.Length; i++)
         {
-            remainingArguments.Add(a, null);
+            string value = arguments[i];
+            if (value.StartsWith('-'))
+            {
+                current = new ArgumentPair(value);
+                pairs.Add(current);
+                continue;
+            }
+
+            if (current is null)
+            {
+                consoleHelper.WriteError($"Unknown argument {value}");
+                continue;
+            }
+
+            current.Value = value;
         }
 
-        if (!a.StartsWith('-'))
-        {
-            consoleHelper.WriteError($"Unknown argument {a}");
-            return b;
-        }
-
-        if (!b.StartsWith('-'))
-        {
-            remainingArguments[a] = b;
-            return a;
-        }
-
-        return b;
+        return pairs;
     }
 }

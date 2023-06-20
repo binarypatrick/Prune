@@ -19,7 +19,7 @@ internal static class ArgumentExtensions
         }
     }
 
-    public static RequiredArgument? GetRequiredArgumentProperty(this PropertyInfo propertyInfo)
+    public static RequiredProperty? GetRequiredArgumentProperty(this PropertyInfo propertyInfo)
     {
         RequiredArgumentAttribute? argumentAttribute = propertyInfo.GetCustomAttribute<RequiredArgumentAttribute>();
         if (argumentAttribute is null)
@@ -27,11 +27,11 @@ internal static class ArgumentExtensions
             return null;
         }
 
-        RequiredArgument requiredArgument = new RequiredArgument(propertyInfo, argumentAttribute);
+        RequiredProperty requiredArgument = new RequiredProperty(propertyInfo, argumentAttribute);
         return requiredArgument;
     }
 
-    public static OptionalArgument? GetOptionalArgumentProperty(this PropertyInfo propertyInfo)
+    public static OptionalProperty? GetOptionalArgumentProperty(this PropertyInfo propertyInfo)
     {
         OptionalArgumentAttribute? argumentAttribute = propertyInfo.GetCustomAttribute<OptionalArgumentAttribute>();
         if (argumentAttribute is null)
@@ -39,7 +39,7 @@ internal static class ArgumentExtensions
             return null;
         }
 
-        OptionalArgument optionalArgument = new OptionalArgument(propertyInfo, argumentAttribute);
+        OptionalProperty optionalArgument = new OptionalProperty(propertyInfo, argumentAttribute);
         return optionalArgument;
     }
 }

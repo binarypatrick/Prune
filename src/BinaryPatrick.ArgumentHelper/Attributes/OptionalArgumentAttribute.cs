@@ -10,10 +10,10 @@ public class OptionalArgumentAttribute : ArgumentAttribute
         IsRequired = false;
     }
 
-    public string? ShortName { get; init; }
+    public string? ShortFlag { get; init; }
 
     internal override bool HasMatchingFlag(string? flag, StringComparison stringComparison = StringComparison.Ordinal)
     {
-        return IsMatchingString(ShortName, flag, stringComparison) || IsMatchingString(FullName, flag, stringComparison);
+        return IsMatchingString(ShortFlag, flag, stringComparison) || IsMatchingString(FullName, flag, stringComparison);
     }
 }

@@ -2,7 +2,7 @@
   "profiles": {
     "BinaryPatrick.Prune": {
       "commandName": "Project",
-      "commandLineArgs": "-? --dry-run -l 10 -h 24 -d 7 -w 4 -m 6 -y 1"
+      "commandLineArgs": "--dir \"C:\\Users\\89pmo\\Downloads\\TestFiles\" --dry-run"
     }
   }
 }
