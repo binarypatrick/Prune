@@ -28,6 +28,7 @@ namespace BinaryPatrick.Prune
         public Startup RegisterServices()
         {
             Services.AddTransient<IDirectoryService, DirectoryService>();
+            Services.AddTransient<IPruneService, PruneService>();
             return this;
         }
 

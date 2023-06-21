@@ -15,8 +15,6 @@ internal class DirectoryService : IDirectoryService
 
     public IEnumerable<FileInfo> GetFiles()
     {
-        //Directory.SetCurrentDirectory(directory);
-
         string directory = options.Directory ?? Environment.CurrentDirectory;
         string searchPattern = GetSearchPattern(options.FilePrefix, options.FileExtension);
         IEnumerable<FileInfo> files = Directory.GetFiles(directory, searchPattern, fileEnumerationoptions)
@@ -24,6 +22,33 @@ internal class DirectoryService : IDirectoryService
             .ToList();
 
         return files;
+    }
+
+    public void CreateFiles()
+    {
+        List<DateTime> range = Enumerable.Range(0, 100000)
+            .Select(x => DateTime.Now.AddHours(-1 * x))
+            .ToList();
+
+        foreach (DateTime date in range)
+        {
+            string filename = options.Directory + date.ToString("yyyy-MM-dd-HH") + ".txt";
+            if (File.Exists(filename))
+            {
+                break;
+            }
+
+            File.Create(filename).Dispose();
+            File.SetLastWriteTime(filename, date);
+        }
+    }
+
+    public void DeleteFiles(IEnumerable<FileInfo> files)
+    {
+        foreach (FileInfo file in files)
+        {
+            File.Delete(file.FullName);
+        }
     }
 
     private static string GetSearchPattern(string? prefix, string? extension)

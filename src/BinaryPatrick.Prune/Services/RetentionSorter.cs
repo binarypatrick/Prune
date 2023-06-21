@@ -7,11 +7,13 @@ namespace BinaryPatrick.Prune.Services
     {
         private readonly IEnumerator<FileInfo> enumerator;
 
-        public RetentionSortResult Result => throw new NotImplementedException();
+        public RetentionSortResult Result { get; } = new RetentionSortResult();
 
         private RetentionSorter(IEnumerable<FileInfo> files)
         {
-            enumerator = files.GetEnumerator();
+            enumerator = files
+                .OrderByDescending(x => x.LastWriteTime)
+                .GetEnumerator();
         }
 
         public static IInitializedRetentionSorter Initialize(IEnumerable<FileInfo> files)
@@ -27,8 +29,7 @@ namespace BinaryPatrick.Prune.Services
             }
 
             Result.Last.Add(enumerator.Current);
-            KeepLast(count--);
-            return this;
+            return KeepLast(--count);
         }
 
         public IHourlySortedRetentionSorter KeepHourly(uint count)
@@ -38,22 +39,26 @@ namespace BinaryPatrick.Prune.Services
 
         public IDailySortedRetentionSorter KeepDaily(uint count)
         {
-            return RetainHourly(count, DateTime.MinValue);
+            FileInfo? lastFile = Result.Hourly.LastOrDefault();
+            return RetainDaily(count, lastFile?.LastWriteTime ?? DateTime.MinValue);
         }
 
         public IWeeklySortedRetentionSorter KeepWeekly(uint count)
         {
-            return RetainWeekly(count, DateTime.MinValue);
+            FileInfo? lastFile = Result.Daily.LastOrDefault();
+            return RetainWeekly(count, lastFile?.LastWriteTime ?? DateTime.MinValue);
         }
 
         public IMonthlySortedRetentionSorter KeepMonthly(uint count)
         {
-            return RetainMonthly(count, DateTime.MinValue);
+            FileInfo? lastFile = Result.Weekly.LastOrDefault();
+            return RetainMonthly(count, lastFile?.LastWriteTime ?? DateTime.MinValue);
         }
 
         public ISortedRetentionSorter KeepYearly(uint count)
         {
-            return RetainYearly(count, DateTime.MinValue);
+            FileInfo? lastFile = Result.Monthly.LastOrDefault();
+            return RetainYearly(count, lastFile?.LastWriteTime ?? DateTime.MinValue);
         }
 
         private RetentionSorter RetainHourly(uint count, DateTime lastTimestamp)
@@ -63,11 +68,11 @@ namespace BinaryPatrick.Prune.Services
                 return this;
             }
 
-            DateTime timestamp = enumerator.Current.LastWriteTimeUtc;
+            DateTime timestamp = enumerator.Current.LastWriteTime;
             if (timestamp.Year != lastTimestamp.Year || timestamp.Month != lastTimestamp.Month || timestamp.Day != lastTimestamp.Day || timestamp.Hour != lastTimestamp.Hour)
             {
                 Result.Hourly.Add(enumerator.Current);
-                return RetainHourly(count--, timestamp);
+                return RetainHourly(--count, timestamp);
             }
 
             Result.Prune.Add(enumerator.Current);
@@ -81,11 +86,11 @@ namespace BinaryPatrick.Prune.Services
                 return this;
             }
 
-            DateTime timestamp = enumerator.Current.LastWriteTimeUtc;
+            DateTime timestamp = enumerator.Current.LastWriteTime;
             if (timestamp.Year != lastTimestamp.Year || timestamp.Month != lastTimestamp.Month || timestamp.Day != lastTimestamp.Day)
             {
                 Result.Daily.Add(enumerator.Current);
-                return RetainDaily(count--, timestamp);
+                return RetainDaily(--count, timestamp);
             }
 
             Result.Prune.Add(enumerator.Current);
@@ -99,11 +104,11 @@ namespace BinaryPatrick.Prune.Services
                 return this;
             }
 
-            DateTime timestamp = enumerator.Current.LastWriteTimeUtc;
+            DateTime timestamp = enumerator.Current.LastWriteTime;
             if (ISOWeek.GetYear(timestamp) != ISOWeek.GetYear(lastTimestamp) || ISOWeek.GetWeekOfYear(timestamp) != ISOWeek.GetWeekOfYear(lastTimestamp))
             {
                 Result.Weekly.Add(enumerator.Current);
-                return RetainWeekly(count--, timestamp);
+                return RetainWeekly(--count, timestamp);
             }
 
             Result.Prune.Add(enumerator.Current);
@@ -118,11 +123,11 @@ namespace BinaryPatrick.Prune.Services
                 return this;
             }
 
-            DateTime timestamp = enumerator.Current.LastWriteTimeUtc;
+            DateTime timestamp = enumerator.Current.LastWriteTime;
             if (timestamp.Year != lastTimestamp.Year || timestamp.Month != lastTimestamp.Month)
             {
                 Result.Monthly.Add(enumerator.Current);
-                return RetainMonthly(count--, timestamp);
+                return RetainMonthly(--count, timestamp);
             }
 
             Result.Prune.Add(enumerator.Current);
@@ -136,11 +141,11 @@ namespace BinaryPatrick.Prune.Services
                 return this;
             }
 
-            DateTime timestamp = enumerator.Current.LastWriteTimeUtc;
+            DateTime timestamp = enumerator.Current.LastWriteTime;
             if (timestamp.Year != lastTimestamp.Year)
             {
                 Result.Yearly.Add(enumerator.Current);
-                return RetainYearly(count--, timestamp);
+                return RetainYearly(--count, timestamp);
             }
 
             Result.Prune.Add(enumerator.Current);

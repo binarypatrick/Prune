@@ -1,4 +1,6 @@
-﻿namespace BinaryPatrick.Prune;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace BinaryPatrick.Prune;
 
 internal class Program
 {
@@ -8,6 +10,9 @@ internal class Program
             .ConfigureOptions(args)
             .RegisterServices()
             .BuildServiceProvider();
+
+        IPruneService service = services.GetRequiredService<IPruneService>();
+        service.PruneFiles();
 
         Console.WriteLine("Hello, World!");
     }
