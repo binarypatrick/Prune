@@ -1,4 +1,4 @@
-﻿using BinaryPatrick.ArgumentHelper.Services;
+﻿using BinaryPatrick.ArgumentHelper;
 using BinaryPatrick.Prune.Models;
 using BinaryPatrick.Prune.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +20,7 @@ namespace BinaryPatrick.Prune
 
         public Startup ConfigureOptions(string[] args)
         {
-            PruneOptions options = new ArgumentParser<PruneOptions>().Parse(args);
+            PruneOptions options = ArgumentParser.Initialize<PruneOptions>().Parse(args);
             Services.AddTransient(sp => options);
             return this;
         }

@@ -9,12 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="BinaryPatrick.ArgumentHelper" Version="0.9.0" />
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BinaryPatrick.ArgumentHelper\BinaryPatrick.ArgumentHelper.csproj" />
   </ItemGroup>
 
 </Project>
