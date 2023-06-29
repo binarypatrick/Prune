@@ -1,6 +1,6 @@
 # Prune
 
-Prune lets you programmatically remove older files while retaining certain files at given time intervals.. It is developed using .NET 7 and can be compiled for x64 (Windows, Linux, MacOS) and arm64 (Raspberry Pi).
+Prune lets you programmatically remove older files while retaining certain files at given time intervals. It is developed using .NET 7 and can be compiled for x64 (Windows, Linux, MacOS) and arm64 (Raspberry Pi).
 
 So far it is running in the wild on a Debian 12 VM, a Raspberry Pi 4B 2GB and 4GB, and a Raspberry Pi 3B.
 
