@@ -6,7 +6,7 @@ So far it is running in the wild on a Debian 12 VM, a Raspberry Pi 4B 2GB and 4G
 
 ## Disclaimer
 
-The purpose of this tool is to _DELETE_ files. Please take care when using it and ensure you do not delete the wrong files. I highly recommend using the `--verbose` and `--dry-run` flags until your are sure what will be pruned. This tool is rendered without warranty of any kind.
+The purpose of this tool is to <u>**DELETE**</u> files. Please take care when using it and ensure you do not delete the wrong files. I highly recommend using the `--verbose` and `--dry-run` flags until your are sure what will be pruned. This tool is rendered without warranty of any kind.
 
 ## Usage
 
