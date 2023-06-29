@@ -23,6 +23,10 @@ prune --path /backups/images --verbose --dry-run /
    --keep-monthly 4 /
 ```
 
+```bash
+prune --path /backups/images -e img -l 5 -d 3 -w 2 -m 4
+```
+
 > Use `--verbose` and `--dry-run` flags until you confirm what will be pruned
 
 | Flag               | Description                                                                              |
