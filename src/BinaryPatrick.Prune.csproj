@@ -8,7 +8,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>prune</AssemblyName>
 	<Authors>BinaryPatrick</Authors>
-	<Copyright>2023</Copyright>
+	<Copyright>Copyright 2023</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
