@@ -27,7 +27,9 @@ prune --path /backups/images --verbose --dry-run /
 prune --path /backups/images -e img -l 5 -d 3 -w 2 -m 4
 ```
 
-> Use `--verbose` and `--dry-run` flags until you confirm what will be pruned
+
+> __Warning__ Use the `--verbose` and `--dry-run` flags until you confirm what will be pruned
+
 
 | Flag               | Description                                                                              |
 | ------------------ | ---------------------------------------------------------------------------------------- |
