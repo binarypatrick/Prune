@@ -31,11 +31,6 @@ internal class DirectoryService : IDirectoryService
             .Select(x => new FileInfo(x))
             .ToList();
 
-        if (options.IsIgnoreFutureFiles)
-        {
-            files = files.Where(x => x.LastWriteTime < DateTime.Now).ToList();
-        }
-
         if (files.Count == 0)
         {
             logger.LogInformation($"No files found matching {searchPattern}");

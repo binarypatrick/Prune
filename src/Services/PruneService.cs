@@ -33,7 +33,6 @@ internal class PruneService : IPruneService
         IEnumerable<FileInfo> files = directoryService.GetFiles();
         if (!files.Any())
         {
-            logger.LogInformation("No files found");
             return;
         }
 

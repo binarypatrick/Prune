@@ -2,9 +2,12 @@
 
 namespace BinaryPatrick.Prune.Models;
 
-internal class PruneOptions
+public class PruneOptions
 {
     // General
+
+    [Option("path", Required = true, HelpText = "Path to files location")]
+    public string? Directory { get; set; }
 
     [Option("dry-run", Required = false, HelpText = "Do not make any changes and display simulated output", SetName = "logging-enabled", Default = false)]
     public bool IsDryRun { get; set; } = false;
@@ -15,14 +18,11 @@ internal class PruneOptions
     [Option('s', "silent", Required = false, HelpText = "Disable all logging", SetName = "logging-silent", Default = false)]
     public bool IsSilent { get; set; } = false;
 
-    [Option('p', "prefix", Required = false, HelpText = "File prefix to use when finding archives")]
+    [Option('p', "prefix", Required = false, HelpText = "File name prefix to use when matching archives")]
     public string? FilePrefix { get; set; }
 
-    [Option('e', "ext", Required = false, HelpText = "File extension to use when finding archives")]
+    [Option('e', "ext", Required = false, HelpText = "File extension to use when matching archives, i.e. img, txt, tar.gz (do not include dot)")]
     public string? FileExtension { get; set; }
-
-    [Option("dir", Required = false, HelpText = "Directory location of the archives", Default = "./")]
-    public string? Directory { get; set; }
 
     [Option('l', "keep-last", Required = false, HelpText = "Number of archives to keep at a minimum", Default = (uint)5)]
     public uint KeepLastCount { get; set; } = 5;
@@ -41,9 +41,6 @@ internal class PruneOptions
 
     [Option('y', "keep-yearly", Required = false, HelpText = "Number of yearly archives to keep", Default = (uint)0)]
     public uint KeepYearlyCount { get; set; } = 0;
-
-    [Option('i', "ignore-future-files", Required = false, HelpText = "Enable verbose logging", Default = true)]
-    public bool IsIgnoreFutureFiles { get; set; } = true;
 
     // Debugging
 
