@@ -22,9 +22,9 @@ internal class DirectoryService : IDirectoryService
     {
         logger.LogTrace($"Entering {nameof(DirectoryService)}.{nameof(GetFiles)}");
 
-        string searchPattern = GetSearchPattern(options.FilePrefix, options.FileExtension);
-
         logger.LogInformation($"Searching {options.Path}");
+
+        string searchPattern = GetSearchPattern(options.FilePrefix, options.FileExtension);
         List<FileInfo> files = Directory.GetFiles(options.Path!, searchPattern, fileEnumerationOptions)
             .Select(x => new FileInfo(x))
             .ToList();
