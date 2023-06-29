@@ -25,15 +25,22 @@ prune --path /backups/images --verbose --dry-run /
 
 > Use `--verbose` and `--dry-run` flags until you confirm what will be pruned
 
-The following time interval options are available:
-| Interval | Description |
-| ---------- | ---------------------------- |
-| `keep-last` | Keep the last number of files |
-| `keep-hourly` | Keep files for a number of hours |
-| `keep-daily` | Keep files for a number of days |
-| `keep-weekly` |Keep files for a number of weeks |
-| `keep-monthly` |Keep files for a number of months |
-| `keep-yearly` |Keep files for a number of years |
+| Flag               | Description                                                                              |
+| ------------------ | ---------------------------------------------------------------------------------------- |
+| --path             | Required. Path to files location                                                         |
+| --dry-run          | (Default: false) Do not make any changes and display simulated output                    |
+| -v, --verbose      | (Default: false) Enable verbose logging                                                  |
+| -s, --silent       | (Default: false) Disable all logging                                                     |
+| -p, --prefix       | File name prefix to use when matching archives                                           |
+| -e, --ext          | File extension to use when matching archives, i.e. img, txt, tar.gz (do not include dot) |
+| -l, --keep-last    | (Default: 5) Number of archives to keep at a minimum                                     |
+| -h, --keep-hourly  | (Default: 0) Number of hourly archives to keep                                           |
+| -d, --keep-daily   | (Default: 0) Number of hourly archives to keep                                           |
+| -w, --keep-weekly  | (Default: 0) Number of hourly archives to keep                                           |
+| -m, --keep-monthly | (Default: 0) Number of hourly archives to keep                                           |
+| -y, --keep-yearly  | (Default: 0) Number of yearly archives to keep                                           |
+| --help             | Display this information                                                                 |
+| --version          | Display version information                                                              |
 
 > If there is more than one backup for a time interval, only the latest is kept
 
@@ -66,22 +73,3 @@ dotnet publish --runtime win-x64 --self-contained -p:PublishSingleFile=true -c R
 ```
 
 You should see the binary in the `/src/out` folder. You can discard the `.pdb` file.
-
-## Arguments
-
-| Flag      | Description                                                                                    |
-| --------- | ---------------------------------------------------------------------------------------------- |
-| --path    | Required. Path to files location                                                               |
-| --dry-run | (Default: false) Do not make any changes and display simulated output                          |
-| -v,       | --verbose (Default: false) Enable verbose logging                                              |
-| -s,       | --silent (Default: false) Disable all logging                                                  |
-| -p,       | --prefix File name prefix to use when matching archives                                        |
-| -e,       | --ext File extension to use when matching archives, i.e. img, txt, tar.gz (do not include dot) |
-| -l,       | --keep-last (Default: 5) Number of archives to keep at a minimum                               |
-| -h,       | --keep-hourly (Default: 0) Number of hourly archives to keep                                   |
-| -d,       | --keep-daily (Default: 0) Number of hourly archives to keep                                    |
-| -w,       | --keep-weekly (Default: 0) Number of hourly archives to keep                                   |
-| -m,       | --keep-monthly (Default: 0) Number of hourly archives to keep                                  |
-| -y,       | --keep-yearly (Default: 0) Number of yearly archives to keep                                   |
-| --help    | Display this information                                                                       |
-| --version | Display version information                                                                    |
