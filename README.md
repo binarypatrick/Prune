@@ -4,11 +4,11 @@ Prune lets you programmatically remove older files while retaining certain files
 
 So far it is running in the wild on a Debian 12 VM, a Raspberry Pi 4B 2GB and 4GB, and a Raspberry Pi 3B.
 
+## Disclaimer
+
+The purpose of this tool is to _DELETE_ files. Please take care when using it and ensure you do not delete the wrong files. I highly recommend using the `--verbose` and `--dry-run` flags until your are sure what will be pruned. This tool is rendered without warranty of any kind.
+
 ## Usage
-
-When you run prune, it is highly recommended you use the `--verbose` and `--dry-run` flags until you can confirm what will be pruned.
-
-Below is an example usage:
 
 ```bash
 prune --help
