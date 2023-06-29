@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using BinaryPatrick.Prune.Models;
+using CommandLine;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BinaryPatrick.Prune;
 
@@ -6,14 +8,17 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        IServiceProvider services = Startup.GetInstance()
-            .ConfigureOptions(args)
-            .RegisterServices()
-            .BuildServiceProvider();
+        ParserResult<PruneOptions> options = Parser.Default
+            .ParseArguments<PruneOptions>(args)
+            .WithParsed(options =>
+            {
+                IServiceProvider services = Startup.GetInstance()
+                    .ConfigureOptions(options)
+                    .RegisterServices()
+                    .BuildServiceProvider();
 
-        IPruneService service = services.GetRequiredService<IPruneService>();
-        service.PruneFiles();
-
-        Console.WriteLine("Hello, World!");
+                IPruneService service = services.GetRequiredService<IPruneService>();
+                service.PruneFiles();
+            });
     }
 }

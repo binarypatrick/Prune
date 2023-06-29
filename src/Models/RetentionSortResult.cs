@@ -1,6 +1,6 @@
 ﻿namespace BinaryPatrick.Prune.Models
 {
-    internal class RetentionSortResult
+    internal class RetentionSortResult : IRetentionSortResult
     {
         public List<FileInfo> Prune { get; } = new List<FileInfo>();
         public List<FileInfo> Last { get; } = new List<FileInfo>();

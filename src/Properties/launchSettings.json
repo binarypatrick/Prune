@@ -2,7 +2,7 @@
   "profiles": {
     "BinaryPatrick.Prune": {
       "commandName": "Project",
-      "commandLineArgs": "--dir \"C:\\Users\\89pmo\\Downloads\\TestFiles\\\\\" --dry-run -l 0 -h 0 -d 3 -w 4 -m 6 -y 1"
+      "commandLineArgs": "--dir \"C:\\Users\\89pmo\\Downloads\\TestFiles\\\\\"\r\n--ext \"txt\"\r\n--keep-last 3\r\n--keep-hourly 24\r\n--keep-daily 7\r\n--keep-weekly 4\r\n--keep-monthly 6\r\n--keep-yearly 5\r\n--silent"
     }
   }
 }

@@ -1,5 +1,4 @@
-﻿using BinaryPatrick.ArgumentHelper;
-using BinaryPatrick.Prune.Models;
+﻿using BinaryPatrick.Prune.Models;
 using BinaryPatrick.Prune.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,17 +17,18 @@ namespace BinaryPatrick.Prune
             return singleton;
         }
 
-        public Startup ConfigureOptions(string[] args)
+        public Startup ConfigureOptions(PruneOptions options)
         {
-            PruneOptions options = ArgumentParser.Initialize<PruneOptions>().Parse(args);
             Services.AddTransient(sp => options);
             return this;
         }
 
         public Startup RegisterServices()
         {
-            Services.AddTransient<IDirectoryService, DirectoryService>();
-            Services.AddTransient<IPruneService, PruneService>();
+            Services.AddSingleton<IRetentionSorterFactory, RetentionSorterFactory>();
+            Services.AddSingleton<IDirectoryService, DirectoryService>();
+            Services.AddSingleton<IConsoleLogger, ConsoleLogger>();
+            Services.AddSingleton<IPruneService, PruneService>();
             return this;
         }
 

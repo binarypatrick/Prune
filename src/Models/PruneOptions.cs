@@ -1,42 +1,58 @@
-﻿using BinaryPatrick.ArgumentHelper;
+﻿using CommandLine;
 
 namespace BinaryPatrick.Prune.Models;
 
 internal class PruneOptions
 {
-    [OptionalArgument("dry-run", "Do not make any changes and display simulated output")]
+    // General
+
+    [Option("dry-run", Required = false, HelpText = "Do not make any changes and display simulated output", SetName = "logging-enabled", Default = false)]
     public bool IsDryRun { get; set; } = false;
 
-    [OptionalArgument("silent", "Do not log any output", ShortFlag = "s")]
-    public bool IsSilent { get; set; } = false;
-
-    [OptionalArgument("verbose", "Enable verbose logging", ShortFlag = "v")]
+    [Option('v', "verbose", Required = false, HelpText = "Enable verbose logging", SetName = "logging-enabled", Default = false)]
     public bool IsVerbose { get; set; } = false;
 
-    [OptionalArgument("keep-last", "Number of archives to keep at a minimum", ShortFlag = "l")]
-    public uint KeepLastCount { get; set; } = 5;
+    [Option('s', "silent", Required = false, HelpText = "Disable all logging", SetName = "logging-silent", Default = false)]
+    public bool IsSilent { get; set; } = false;
 
-    [OptionalArgument("keep-hourly", "Number of hourly archives to keep", ShortFlag = "h")]
-    public uint KeepHourlyCount { get; set; } = 0;
-
-    [OptionalArgument("keep-daily", "Number of hourly archives to keep", ShortFlag = "d")]
-    public uint KeepDailyCount { get; set; } = 0;
-
-    [OptionalArgument("keep-weekly", "Number of hourly archives to keep", ShortFlag = "w")]
-    public uint KeepWeeklyCount { get; set; } = 0;
-
-    [OptionalArgument("keep-monthly", "Number of hourly archives to keep", ShortFlag = "m")]
-    public uint KeepMonthlyCount { get; set; } = 0;
-
-    [OptionalArgument("keep-yearly", "Number of yearly archives to keep", ShortFlag = "y")]
-    public uint KeepYearlyCount { get; set; } = 0;
-
-    [OptionalArgument("prefix", "File prefix to use when finding archives", ShortFlag = "p")]
+    [Option('p', "prefix", Required = false, HelpText = "File prefix to use when finding archives")]
     public string? FilePrefix { get; set; }
 
-    [OptionalArgument("ext", "File extension to use when finding archives", ShortFlag = "e")]
+    [Option('e', "ext", Required = false, HelpText = "File extension to use when finding archives")]
     public string? FileExtension { get; set; }
 
-    [OptionalArgument("dir", "Directory location of the archives [Default: current directory]")]
+    [Option("dir", Required = false, HelpText = "Directory location of the archives", Default = "./")]
     public string? Directory { get; set; }
+
+    [Option('l', "keep-last", Required = false, HelpText = "Number of archives to keep at a minimum", Default = (uint)5)]
+    public uint KeepLastCount { get; set; } = 5;
+
+    [Option('h', "keep-hourly", Required = false, HelpText = "Number of hourly archives to keep", Default = (uint)0)]
+    public uint KeepHourlyCount { get; set; } = 0;
+
+    [Option('d', "keep-daily", Required = false, HelpText = "Number of hourly archives to keep", Default = (uint)0)]
+    public uint KeepDailyCount { get; set; } = 0;
+
+    [Option('w', "keep-weekly", Required = false, HelpText = "Number of hourly archives to keep", Default = (uint)0)]
+    public uint KeepWeeklyCount { get; set; } = 0;
+
+    [Option('m', "keep-monthly", Required = false, HelpText = "Number of hourly archives to keep", Default = (uint)0)]
+    public uint KeepMonthlyCount { get; set; } = 0;
+
+    [Option('y', "keep-yearly", Required = false, HelpText = "Number of yearly archives to keep", Default = (uint)0)]
+    public uint KeepYearlyCount { get; set; } = 0;
+
+    [Option('i', "ignore-future-files", Required = false, HelpText = "Enable verbose logging", Default = true)]
+    public bool IsIgnoreFutureFiles { get; set; } = true;
+
+    // Debugging
+
+    [Option("trace", Required = false, HelpText = "Enable trace logging", Hidden = true)]
+    public bool IsTrace { get; set; } = false;
+
+    [Option("create-files", Required = false, HelpText = "Create dummy logs for testing", Hidden = true)]
+    public int CreateFilesCount { get; set; } = 0;
+
+    [Option("create-files-gap", Required = false, HelpText = "Create dummy logs for testing", Hidden = true)]
+    public TimeSpan CreateFilesGap { get; set; } = TimeSpan.FromMinutes(20);
 }

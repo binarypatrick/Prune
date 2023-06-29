@@ -1,64 +1,67 @@
 ﻿using BinaryPatrick.Prune.Models;
+using BinaryPatrick.Prune.Models.Constants;
 
 namespace BinaryPatrick.Prune.Services;
 
 internal class PruneService : IPruneService
 {
-    private readonly PruneOptions options;
+    private readonly IConsoleLogger logger;
     private readonly IDirectoryService directoryService;
+    private readonly IRetentionSorterFactory retentionSorterFactory;
+    private readonly PruneOptions options;
 
-    public PruneService(PruneOptions options, IDirectoryService directoryService)
+    public PruneService(IConsoleLogger logger, IDirectoryService directoryService, IRetentionSorterFactory retentionSorterFactory, PruneOptions options)
     {
-        this.options = options;
+        logger.LogTrace($"Constructing {nameof(PruneService)}");
+
+        this.logger = logger;
         this.directoryService = directoryService;
+        this.retentionSorterFactory = retentionSorterFactory;
+        this.options = options;
     }
 
     public void PruneFiles()
     {
+        logger.LogTrace($"Entering {nameof(PruneService)}.{nameof(PruneFiles)}");
+
+        if (options.CreateFilesCount > 0)
+        {
+            directoryService.CreateFiles();
+            return;
+        }
+
         IEnumerable<FileInfo> files = directoryService.GetFiles();
-        RetentionSortResult result = RetentionSorter.Initialize(files)
+        if (!files.Any())
+        {
+            logger.LogInformation("No files found");
+            return;
+        }
+
+        IRetentionSortResult result = retentionSorterFactory.CreateRetentionSorter(files)
             .KeepLast(options.KeepLastCount)
             .KeepHourly(options.KeepHourlyCount)
             .KeepDaily(options.KeepDailyCount)
             .KeepWeekly(options.KeepWeeklyCount)
             .KeepMonthly(options.KeepMonthlyCount)
             .KeepYearly(options.KeepYearlyCount)
-            .PruneRemaining()
+            .PruneExpired()
             .Result;
 
-        if (!options.IsSilent)
-        {
-            LogResult(result);
-        }
+        LogWhenExpectedNotFound(LabelConstant.KeepLast, options.KeepLastCount, result.Last.Count);
+        LogWhenExpectedNotFound(LabelConstant.KeepHourly, options.KeepHourlyCount, result.Hourly.Count);
+        LogWhenExpectedNotFound(LabelConstant.KeepDaily, options.KeepDailyCount, result.Daily.Count);
+        LogWhenExpectedNotFound(LabelConstant.KeepWeekly, options.KeepWeeklyCount, result.Weekly.Count);
+        LogWhenExpectedNotFound(LabelConstant.KeepMonthly, options.KeepMonthlyCount, result.Monthly.Count);
+        LogWhenExpectedNotFound(LabelConstant.KeepYearly, options.KeepYearlyCount, result.Yearly.Count);
 
-        if (!options.IsDryRun)
-        {
-            directoryService.DeleteFiles(result.Prune);
-        }
+        directoryService.DeleteFiles(result.Prune);
     }
 
-    private void LogResult(RetentionSortResult result)
+    private void LogWhenExpectedNotFound(string label, uint expected, int found)
     {
-        Console.WriteLine($"--- Prune Evaluation For {options.Directory} ---");
-        LogResultFiles(nameof(result.Last), result.Last);
-        LogResultFiles(nameof(result.Hourly), result.Hourly);
-        LogResultFiles(nameof(result.Daily), result.Daily);
-        LogResultFiles(nameof(result.Weekly), result.Weekly);
-        LogResultFiles(nameof(result.Monthly), result.Monthly);
-        LogResultFiles(nameof(result.Yearly), result.Yearly);
-        LogResultFiles(nameof(result.Prune), result.Prune);
-    }
-
-    private void LogResultFiles(string groupName, IEnumerable<FileInfo> files)
-    {
-        Console.WriteLine($"  {groupName} ({files.Count()}):");
-        if (!files.Any())
+        if (found < expected)
         {
-            Console.WriteLine("    None");
-        }
-        foreach (FileInfo file in files)
-        {
-            Console.WriteLine($"    {file.Name}");
+            logger.LogWarning($"{label} only {found} matches found; {expected} expected");
         }
     }
 }

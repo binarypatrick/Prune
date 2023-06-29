@@ -4,7 +4,7 @@ namespace BinaryPatrick.Prune
 {
     internal interface ISortedRetentionSorter
     {
-        public RetentionSortResult Result { get; }
-        public ISortedRetentionSorter PruneRemaining();
+        public IRetentionSortResult Result { get; }
+        public ISortedRetentionSorter PruneExpired();
     }
 }
