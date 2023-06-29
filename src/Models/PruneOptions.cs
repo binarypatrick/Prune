@@ -7,7 +7,7 @@ public class PruneOptions
     // General
 
     [Option("path", Required = true, HelpText = "Path to files location")]
-    public string? Directory { get; set; }
+    public string? Path { get; set; }
 
     [Option("dry-run", Required = false, HelpText = "Do not make any changes and display simulated output", SetName = "logging-enabled", Default = false)]
     public bool IsDryRun { get; set; } = false;

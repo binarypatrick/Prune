@@ -22,12 +22,10 @@ internal class DirectoryService : IDirectoryService
     {
         logger.LogTrace($"Entering {nameof(DirectoryService)}.{nameof(GetFiles)}");
 
-        string directory = options.Directory ?? Environment.CurrentDirectory;
         string searchPattern = GetSearchPattern(options.FilePrefix, options.FileExtension);
 
-        logger.LogInformation($"Searching {directory}");
-
-        List<FileInfo> files = Directory.GetFiles(directory, searchPattern, fileEnumerationOptions)
+        logger.LogInformation($"Searching {options.Path}");
+        List<FileInfo> files = Directory.GetFiles(options.Path!, searchPattern, fileEnumerationOptions)
             .Select(x => new FileInfo(x))
             .ToList();
 
@@ -55,7 +53,7 @@ internal class DirectoryService : IDirectoryService
         string prefix = Guid.NewGuid().ToString("N")[..6];
         foreach ((string row, DateTime timestamp) in range)
         {
-            string filename = $"{options.Directory}{prefix}_{timestamp:yyyyMMdd_HHmmss}.txt";
+            string filename = $"{options.Path}{prefix}_{timestamp:yyyyMMdd_HHmmss}.txt";
             File.Create(filename).Dispose();
             File.SetLastWriteTime(filename, timestamp);
 
