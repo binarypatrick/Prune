@@ -3,7 +3,7 @@ using System.Text;
 
 namespace BinaryPatrick.Prune.Services;
 
-internal class DirectoryService : IDirectoryService
+public class DirectoryService : IDirectoryService
 {
     private static readonly EnumerationOptions fileEnumerationOptions = GetDefaultEnumerationOptions();
 

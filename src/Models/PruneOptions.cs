@@ -1,4 +1,5 @@
-﻿using CommandLine;
+﻿using BinaryPatrick.Prune.Models.Constants;
+using CommandLine;
 
 namespace BinaryPatrick.Prune.Models;
 
@@ -9,13 +10,13 @@ public class PruneOptions
     [Option("path", Required = true, HelpText = "Path to files location")]
     public string? Path { get; set; }
 
-    [Option("dry-run", Required = false, HelpText = "Do not make any changes and display simulated output", SetName = "logging-enabled", Default = false)]
+    [Option("dry-run", Required = false, HelpText = "Do not make any changes and display simulated output", SetName = OptionsSetName.LoggingEnabled, Default = false)]
     public bool IsDryRun { get; set; } = false;
 
-    [Option('v', "verbose", Required = false, HelpText = "Enable verbose logging", SetName = "logging-enabled", Default = false)]
+    [Option('v', "verbose", Required = false, HelpText = "Enable verbose logging", SetName = OptionsSetName.LoggingEnabled, Default = false)]
     public bool IsVerbose { get; set; } = false;
 
-    [Option('s', "silent", Required = false, HelpText = "Disable all logging", SetName = "logging-silent", Default = false)]
+    [Option('s', "silent", Required = false, HelpText = "Disable all logging", SetName = OptionsSetName.LoggingSilent, Default = false)]
     public bool IsSilent { get; set; } = false;
 
     [Option('p', "prefix", Required = false, HelpText = "File name prefix to use when matching archives")]
@@ -51,5 +52,5 @@ public class PruneOptions
     public int CreateFilesCount { get; set; } = 0;
 
     [Option("create-files-gap", Required = false, HelpText = "Create dummy logs for testing", Hidden = true)]
-    public TimeSpan CreateFilesGap { get; set; } = TimeSpan.FromMinutes(20);
+    public TimeSpan CreateFilesGap { get; set; } = TimeSpan.FromDays(1);
 }

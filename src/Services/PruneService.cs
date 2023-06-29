@@ -3,7 +3,7 @@ using BinaryPatrick.Prune.Models.Constants;
 
 namespace BinaryPatrick.Prune.Services;
 
-internal class PruneService : IPruneService
+public class PruneService : IPruneService
 {
     private readonly IConsoleLogger logger;
     private readonly IDirectoryService directoryService;

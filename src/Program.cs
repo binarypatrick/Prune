@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BinaryPatrick.Prune;
 
-internal class Program
+public class Program
 {
     private static void Main(string[] args)
     {

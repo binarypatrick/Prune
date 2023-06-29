@@ -1,13 +1,11 @@
-﻿namespace BinaryPatrick.Prune.Models.Constants
+﻿namespace BinaryPatrick.Prune.Models.Constants;
+
+public static class LabelConstant
 {
-    internal static class LabelConstant
-    {
-        public static string KeepLast { get; } = "keep-last";
-        public static string KeepHourly { get; } = "keep-hourly";
-        public static string KeepDaily { get; } = "keep-daily";
-        public static string KeepWeekly { get; } = "keep-weekly";
-        public static string KeepMonthly { get; } = "keep-monthly";
-        public static string KeepYearly { get; } = "keep-yearly";
-        public static string Expired { get; } = "expired";
-    }
+    public const string KeepLast = "keep-last";
+    public const string KeepHourly = "keep-hourly";
+    public const string KeepDaily = "keep-daily";
+    public const string KeepWeekly = "keep-weekly";
+    public const string KeepMonthly = "keep-monthly";
+    public const string KeepYearly = "keep-yearly";
 }

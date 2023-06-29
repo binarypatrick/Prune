@@ -1,7 +1,6 @@
-﻿namespace BinaryPatrick.Prune
+﻿namespace BinaryPatrick.Prune;
+
+public interface IRetentionSorterFactory
 {
-    internal interface IRetentionSorterFactory
-    {
-        IInitializedRetentionSorter CreateRetentionSorter(IEnumerable<FileInfo> files);
-    }
+    IInitializedRetentionSorter CreateRetentionSorter(IEnumerable<FileInfo> files);
 }

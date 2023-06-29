@@ -1,6 +1,6 @@
 ﻿namespace BinaryPatrick.Prune;
 
-internal static class Extensions
+public static class Extensions
 {
     public static bool IsNullOrWhiteSpace(this string? value)
     {

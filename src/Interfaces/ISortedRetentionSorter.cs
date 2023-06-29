@@ -1,10 +1,7 @@
-﻿using BinaryPatrick.Prune.Models;
+﻿namespace BinaryPatrick.Prune;
 
-namespace BinaryPatrick.Prune
+public interface ISortedRetentionSorter
 {
-    internal interface ISortedRetentionSorter
-    {
-        public IRetentionSortResult Result { get; }
-        public ISortedRetentionSorter PruneExpired();
-    }
+    public IRetentionSortResult Result { get; }
+    public ISortedRetentionSorter PruneExpired();
 }

@@ -1,7 +1,6 @@
-﻿namespace BinaryPatrick.Prune
+﻿namespace BinaryPatrick.Prune;
+
+public interface IMonthlySortedRetentionSorter : ISortedRetentionSorter
 {
-    internal interface IMonthlySortedRetentionSorter : ISortedRetentionSorter
-    {
-        ISortedRetentionSorter KeepYearly(uint count);
-    }
+    ISortedRetentionSorter KeepYearly(uint count);
 }

@@ -1,7 +1,6 @@
-﻿namespace BinaryPatrick.Prune
+﻿namespace BinaryPatrick.Prune;
+
+public interface IPruneService
 {
-    internal interface IPruneService
-    {
-        void PruneFiles();
-    }
+    void PruneFiles();
 }

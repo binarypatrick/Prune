@@ -1,6 +1,6 @@
 ﻿namespace BinaryPatrick.Prune;
 
-internal interface IDirectoryService
+public interface IDirectoryService
 {
     void CreateFiles();
 

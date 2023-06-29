@@ -1,10 +1,9 @@
-﻿namespace BinaryPatrick.Prune.Models.Constants
+﻿namespace BinaryPatrick.Prune.Models.Constants;
+
+public static class ConsoleColorConstants
 {
-    internal static class ConsoleColorConstants
-    {
-        public static ConsoleColor Critical { get; } = ConsoleColor.Red;
-        public static ConsoleColor Warning { get; } = ConsoleColor.DarkYellow;
-        public static ConsoleColor Debug { get; } = ConsoleColor.DarkGray;
-        public static ConsoleColor Trace { get; } = ConsoleColor.DarkMagenta;
-    }
+    public const ConsoleColor Critical = ConsoleColor.Red;
+    public const ConsoleColor Warning = ConsoleColor.DarkYellow;
+    public const ConsoleColor Debug = ConsoleColor.DarkGray;
+    public const ConsoleColor Trace = ConsoleColor.DarkMagenta;
 }
