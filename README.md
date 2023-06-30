@@ -1,4 +1,4 @@
-# Prune
+# Prune [![Build & Test](https://github.com/BinaryPatrick/Prune/actions/workflows/build-test.yml/badge.svg?branch=main)](https://github.com/BinaryPatrick/Prune/actions/workflows/build-test.yml)
 
 Prune lets you programmatically remove older files while retaining certain files at given time intervals. It is developed using .NET 7 and can be compiled for x64 (Windows, Linux, MacOS) and arm64 (Raspberry Pi).
 
