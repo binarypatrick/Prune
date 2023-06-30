@@ -33,7 +33,7 @@ jobs:
           draft: true
           prerelease: false
       - name: Upload Asset prune-linux-x64.tar.gz
-        id: upload-release-asset 
+        id: upload-release-asset-linux-x64
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -43,7 +43,7 @@ jobs:
           asset_name: prune-linux-x64.tar.gz
           asset_content_type: application/gzip
       - name: Upload Asset prune-linux-arm64.tar.gz
-        id: upload-release-asset 
+        id: upload-release-asset-linux-arm64
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,7 +53,7 @@ jobs:
           asset_name: prune-linux-arm64.tar.gz
           asset_content_type: application/gzip
       - name: Upload Asset prune-win-x64.zip
-        id: upload-release-asset 
+        id: upload-release-asset-win-x64
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
