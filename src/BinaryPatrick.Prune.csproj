@@ -9,12 +9,23 @@
     <AssemblyName>prune</AssemblyName>
 	<Authors>BinaryPatrick</Authors>
 	<Copyright>Copyright 2023</Copyright>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
 
   <ItemGroup>
 	<PackageReference Include="CommandLineParser" Version="2.9.1" />
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+	<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="7.0.0" />
+	<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="7.0.0" />
 	<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
   </ItemGroup>
 

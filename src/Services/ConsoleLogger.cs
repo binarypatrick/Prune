@@ -1,82 +1,70 @@
 ﻿using BinaryPatrick.Prune.Models;
 using BinaryPatrick.Prune.Models.Constants;
 
-namespace BinaryPatrick.Prune.Services
+namespace BinaryPatrick.Prune.Services;
+
+/// <inheritdoc cref="IConsoleLogger"/>
+public class ConsoleLogger : IConsoleLogger
 {
-    internal class ConsoleLogger : IConsoleLogger
+    private readonly PruneOptions options;
+
+    /// <summary>Initializes a new instance of the <see cref="ConsoleLogger"/> class</summary>
+    public ConsoleLogger(PruneOptions options)
     {
-        private readonly PruneOptions options;
+        this.options = options;
+        LogTrace($"Constructing {nameof(ConsoleLogger)}");
+    }
 
-        public ConsoleLogger(PruneOptions options)
+    /// <inheritdoc/>
+    public void LogInformation(string text)
+    {
+        if (!options.IsSilent)
         {
-            this.options = options;
-            LogTrace($"Constructing {nameof(ConsoleLogger)}");
-        }
-
-        public void LogInformation(string text)
-        {
-            if (options.IsSilent)
-            {
-                return;
-            }
-
             Console.WriteLine(text);
         }
+    }
 
-        public void LogWarning(string text)
+    /// <inheritdoc/>
+    public void LogWarning(string text)
+    {
+        if (!options.IsSilent)
         {
-            if (options.IsSilent)
-            {
-                return;
-            }
-
             Log(ConsoleColorConstants.Warning, text);
-
         }
+    }
 
-        public void LogCritical(string text)
+    /// <inheritdoc/>
+    public void LogCritical(string text)
+    {
+        if (!options.IsSilent)
         {
-            if (options.IsSilent)
-            {
-                return;
-            }
-
             Log(ConsoleColorConstants.Critical, text);
-
         }
+    }
 
-        public void LogVerbose(string text)
+    /// <inheritdoc/>
+    public void LogVerbose(string text)
+    {
+        if (options.IsVerbose && !options.IsSilent)
         {
-            if (options.IsSilent || !options.IsVerbose)
-            {
-                return;
-            }
-
             Log(ConsoleColorConstants.Debug, text);
         }
+    }
 
-        public void LogTrace(string text)
+    /// <inheritdoc/>
+    public void LogTrace(string text)
+    {
+        if (options.IsTrace)
         {
-            if (!options.IsTrace)
-            {
-                return;
-            }
-
             Log(ConsoleColorConstants.Trace, text);
         }
+    }
 
-        private void Log(ConsoleColor foregroundColor, string format, params object?[] args)
-        {
-            string text = string.Format(format, args);
-            Log(foregroundColor, text);
-        }
-
-        private void Log(ConsoleColor foregroundColor, string text)
-        {
-            ConsoleColor initialColor = Console.ForegroundColor;
-            Console.ForegroundColor = foregroundColor;
-            Console.WriteLine(text);
-            Console.ForegroundColor = initialColor;
-        }
+    private void Log(ConsoleColor foregroundColor, string text)
+    {
+        ConsoleColor initialColor = Console.ForegroundColor;
+        Console.ForegroundColor = foregroundColor;
+        Console.WriteLine(text);
+        Console.ForegroundColor = initialColor;
     }
 }

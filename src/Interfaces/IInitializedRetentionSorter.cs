@@ -1,12 +1,23 @@
-﻿namespace BinaryPatrick.Prune
+﻿namespace BinaryPatrick.Prune;
+
+/// <inheritdoc cref="IRetentionSorter"/>
+public interface IInitializedRetentionSorter
 {
-    internal interface IInitializedRetentionSorter
-    {
-        ILastSortedRetentionSorter KeepLast(uint count);
-        IHourlySortedRetentionSorter KeepHourly(uint count);
-        IDailySortedRetentionSorter KeepDaily(uint count);
-        IMonthlySortedRetentionSorter KeepMonthly(uint count);
-        IWeeklySortedRetentionSorter KeepWeekly(uint count);
-        ISortedRetentionSorter KeepYearly(uint count);
-    }
+    /// <inheritdoc cref="IRetentionSorter.KeepLast"/>
+    ILastSortedRetentionSorter KeepLast(uint count);
+
+    /// <inheritdoc cref="IRetentionSorter.KeepHourly"/>
+    IHourlySortedRetentionSorter KeepHourly(uint count);
+
+    /// <inheritdoc cref="IRetentionSorter.KeepDaily"/>
+    IDailySortedRetentionSorter KeepDaily(uint count);
+
+    /// <inheritdoc cref="IRetentionSorter.KeepWeekly"/>
+    IWeeklySortedRetentionSorter KeepWeekly(uint count);
+
+    /// <inheritdoc cref="IRetentionSorter.KeepMonthly"/>
+    IMonthlySortedRetentionSorter KeepMonthly(uint count);
+
+    /// <inheritdoc cref="IRetentionSorter.KeepYearly"/>
+    ISortedRetentionSorter KeepYearly(uint count);
 }

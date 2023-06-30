@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryPatrick.Prune", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0E81F046-9FF6-4F9D-AA22-8FC614916E83}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{DEDD9E22-B42D-48C4-9475-9E56A6475CF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryPatrick.Prune.Unit", "tests\BinaryPatrick.Prune.UnitTests\BinaryPatrick.Prune.Unit.csproj", "{8FC6EB26-77EE-4015-816E-C560E20476E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +21,17 @@ Global
 		{F99DE3F2-EC3B-4B64-8295-EFC13137C570}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F99DE3F2-EC3B-4B64-8295-EFC13137C570}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F99DE3F2-EC3B-4B64-8295-EFC13137C570}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FC6EB26-77EE-4015-816E-C560E20476E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FC6EB26-77EE-4015-816E-C560E20476E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FC6EB26-77EE-4015-816E-C560E20476E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FC6EB26-77EE-4015-816E-C560E20476E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F99DE3F2-EC3B-4B64-8295-EFC13137C570} = {0E81F046-9FF6-4F9D-AA22-8FC614916E83}
+		{8FC6EB26-77EE-4015-816E-C560E20476E1} = {DEDD9E22-B42D-48C4-9475-9E56A6475CF8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1070B2EB-E0AC-4B7A-B3A7-6E0F4C8FCF8D}

@@ -1,10 +1,27 @@
-﻿namespace BinaryPatrick.Prune.Models.Constants
+﻿namespace BinaryPatrick.Prune.Models.Constants;
+
+/// <summary>
+/// Color constants for logging levels
+/// </summary>
+public static class ConsoleColorConstants
 {
-    internal static class ConsoleColorConstants
-    {
-        public static ConsoleColor Critical { get; } = ConsoleColor.Red;
-        public static ConsoleColor Warning { get; } = ConsoleColor.DarkYellow;
-        public static ConsoleColor Debug { get; } = ConsoleColor.DarkGray;
-        public static ConsoleColor Trace { get; } = ConsoleColor.DarkMagenta;
-    }
+    /// <summary>
+    /// Critical log level color
+    /// </summary>
+    public const ConsoleColor Critical = ConsoleColor.Red;
+
+    /// <summary>
+    /// Warning log level color
+    /// </summary>
+    public const ConsoleColor Warning = ConsoleColor.DarkYellow;
+
+    /// <summary>
+    /// Debug log level color
+    /// </summary>
+    public const ConsoleColor Debug = ConsoleColor.DarkGray;
+
+    /// <summary>
+    /// Trace log level color
+    /// </summary>
+    public const ConsoleColor Trace = ConsoleColor.DarkMagenta;
 }
