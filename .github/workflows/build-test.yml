@@ -10,7 +10,7 @@ on:
     branches:
     - main
 jobs:
-  build:
+  build-test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
