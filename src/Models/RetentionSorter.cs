@@ -1,29 +1,33 @@
-﻿using BinaryPatrick.Prune.Models.Constants;
-using System.Globalization;
+﻿using System.Globalization;
+using BinaryPatrick.Prune.Models.Constants;
+using Microsoft.Extensions.FileProviders;
 
 namespace BinaryPatrick.Prune.Models;
 
-public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetentionSorter, IHourlySortedRetentionSorter, IDailySortedRetentionSorter, IWeeklySortedRetentionSorter, IMonthlySortedRetentionSorter, ISortedRetentionSorter
+/// <inheritdoc cref="IRetentionSorter"/>
+public class RetentionSorter : IRetentionSorter, IInitializedRetentionSorter, ILastSortedRetentionSorter, IHourlySortedRetentionSorter, IDailySortedRetentionSorter, IWeeklySortedRetentionSorter, IMonthlySortedRetentionSorter, ISortedRetentionSorter
 {
-    private const string PRUNE = "prune";
     private readonly IConsoleLogger logger;
-    private readonly IEnumerator<FileInfo> enumerator;
+    private readonly IEnumerator<IFileInfo> enumerator;
 
-    private DateTime lastTimestamp;
+    private DateTimeOffset lastTimestamp;
 
+    /// <inheritdoc/>
     public IRetentionSortResult Result { get; } = new RetentionSortResult();
 
-    public RetentionSorter(IConsoleLogger logger, IEnumerable<FileInfo> files)
+    /// <summary>Initializes a new instance of the <see cref="RetentionSorter"/> class</summary>
+    public RetentionSorter(IConsoleLogger logger, IEnumerable<IFileInfo> files)
     {
         logger.LogTrace($"Constructing {nameof(RetentionSorter)}");
 
         this.logger = logger;
         lastTimestamp = DateTime.MinValue;
         enumerator = files
-            .OrderByDescending(x => x.LastWriteTime)
+            .OrderByDescending(x => x.LastModified)
             .GetEnumerator();
     }
 
+    /// <inheritdoc/>
     public ILastSortedRetentionSorter KeepLast(uint count)
     {
         logger.LogTrace($"Entering {nameof(RetentionSorter)}.{nameof(KeepLast)}");
@@ -36,12 +40,14 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
         while (Result.Last.Count < count && enumerator.MoveNext())
         {
             Result.Last.Add(enumerator.Current);
+            lastTimestamp = enumerator.Current.LastModified;
             LogKeeping(LabelConstant.KeepLast, enumerator.Current.Name);
         }
 
         return this;
     }
 
+    /// <inheritdoc/>
     public IHourlySortedRetentionSorter KeepHourly(uint count)
     {
         logger.LogTrace($"Entering {nameof(RetentionSorter)}.{nameof(KeepHourly)}");
@@ -53,7 +59,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
 
         while (Result.Hourly.Count < count && enumerator.MoveNext())
         {
-            DateTime timestamp = enumerator.Current.LastWriteTime;
+            DateTimeOffset timestamp = enumerator.Current.LastModified;
             if (timestamp.Year != lastTimestamp.Year || timestamp.Month != lastTimestamp.Month || timestamp.Day != lastTimestamp.Day || timestamp.Hour != lastTimestamp.Hour)
             {
                 Result.Hourly.Add(enumerator.Current);
@@ -63,7 +69,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
                 continue;
             }
 
-            Result.Prune.Add(enumerator.Current);
+            Result.Unmatched.Add(enumerator.Current);
             lastTimestamp = timestamp;
 
             LogPruning(enumerator.Current.Name);
@@ -72,6 +78,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
         return this;
     }
 
+    /// <inheritdoc/>
     public IDailySortedRetentionSorter KeepDaily(uint count)
     {
         logger.LogTrace($"Entering {nameof(RetentionSorter)}.{nameof(KeepDaily)}");
@@ -83,7 +90,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
 
         while (Result.Daily.Count < count && enumerator.MoveNext())
         {
-            DateTime timestamp = enumerator.Current.LastWriteTime;
+            DateTimeOffset timestamp = enumerator.Current.LastModified;
             if (timestamp.Year != lastTimestamp.Year || timestamp.Month != lastTimestamp.Month || timestamp.Day != lastTimestamp.Day)
             {
                 Result.Daily.Add(enumerator.Current);
@@ -93,7 +100,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
                 continue;
             }
 
-            Result.Prune.Add(enumerator.Current);
+            Result.Unmatched.Add(enumerator.Current);
             lastTimestamp = timestamp;
 
             LogPruning(enumerator.Current.Name);
@@ -102,6 +109,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
         return this;
     }
 
+    /// <inheritdoc/>
     public IWeeklySortedRetentionSorter KeepWeekly(uint count)
     {
         logger.LogTrace($"Entering {nameof(RetentionSorter)}.{nameof(KeepWeekly)}");
@@ -113,8 +121,8 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
 
         while (Result.Weekly.Count < count && enumerator.MoveNext())
         {
-            DateTime timestamp = enumerator.Current.LastWriteTime;
-            if (ISOWeek.GetYear(timestamp) != ISOWeek.GetYear(lastTimestamp) || ISOWeek.GetWeekOfYear(timestamp) != ISOWeek.GetWeekOfYear(lastTimestamp))
+            DateTimeOffset timestamp = enumerator.Current.LastModified;
+            if (ISOWeek.GetYear(timestamp.DateTime) != ISOWeek.GetYear(lastTimestamp.DateTime) || ISOWeek.GetWeekOfYear(timestamp.DateTime) != ISOWeek.GetWeekOfYear(lastTimestamp.DateTime))
             {
                 Result.Weekly.Add(enumerator.Current);
                 lastTimestamp = timestamp;
@@ -123,7 +131,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
                 continue;
             }
 
-            Result.Prune.Add(enumerator.Current);
+            Result.Unmatched.Add(enumerator.Current);
             lastTimestamp = timestamp;
 
             LogPruning(enumerator.Current.Name);
@@ -133,6 +141,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
     }
 
 
+    /// <inheritdoc/>
     public IMonthlySortedRetentionSorter KeepMonthly(uint count)
     {
         logger.LogTrace($"Entering {nameof(RetentionSorter)}.{nameof(KeepMonthly)}");
@@ -144,7 +153,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
 
         while (Result.Monthly.Count < count && enumerator.MoveNext())
         {
-            DateTime timestamp = enumerator.Current.LastWriteTime;
+            DateTimeOffset timestamp = enumerator.Current.LastModified;
             if (timestamp.Year != lastTimestamp.Year || timestamp.Month != lastTimestamp.Month)
             {
                 Result.Monthly.Add(enumerator.Current);
@@ -154,7 +163,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
                 continue;
             }
 
-            Result.Prune.Add(enumerator.Current);
+            Result.Unmatched.Add(enumerator.Current);
             lastTimestamp = timestamp;
 
             LogPruning(enumerator.Current.Name);
@@ -163,6 +172,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
         return this;
     }
 
+    /// <inheritdoc/>
     public ISortedRetentionSorter KeepYearly(uint count)
     {
         logger.LogTrace($"Entering {nameof(RetentionSorter)}.{nameof(KeepYearly)}");
@@ -174,7 +184,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
 
         while (Result.Yearly.Count < count && enumerator.MoveNext())
         {
-            DateTime timestamp = enumerator.Current.LastWriteTime;
+            DateTimeOffset timestamp = enumerator.Current.LastModified;
             if (timestamp.Year != lastTimestamp.Year)
             {
                 Result.Yearly.Add(enumerator.Current);
@@ -184,7 +194,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
                 continue;
             }
 
-            Result.Prune.Add(enumerator.Current);
+            Result.Unmatched.Add(enumerator.Current);
             lastTimestamp = timestamp;
 
             LogPruning(enumerator.Current.Name);
@@ -194,13 +204,14 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
         return this;
     }
 
-    public ISortedRetentionSorter PruneExpired()
+    /// <inheritdoc/>
+    public ISortedRetentionSorter PruneRemaining()
     {
-        logger.LogTrace($"Entering {nameof(RetentionSorter)}.{nameof(PruneExpired)}");
+        logger.LogTrace($"Entering {nameof(RetentionSorter)}.{nameof(PruneRemaining)}");
 
         while (enumerator.MoveNext())
         {
-            Result.Prune.Add(enumerator.Current);
+            Result.Unmatched.Add(enumerator.Current);
             LogPruning(enumerator.Current.Name);
         }
 
@@ -208,9 +219,7 @@ public class RetentionSorter : IInitializedRetentionSorter, ILastSortedRetention
     }
 
     private void LogKeeping(string header, string filename)
-    {
-        logger.LogVerbose($"{header,-12} {filename}");
-    }
+        => logger.LogVerbose($"{header,-12} {filename}");
 
     private void LogPruning(string filename)
     {

@@ -1,8 +1,10 @@
 ﻿using BinaryPatrick.Prune.Models;
 using BinaryPatrick.Prune.Models.Constants;
+using Microsoft.Extensions.FileProviders;
 
 namespace BinaryPatrick.Prune.Services;
 
+/// <inheritdoc cref="IPruneService"/>
 public class PruneService : IPruneService
 {
     private readonly IConsoleLogger logger;
@@ -10,6 +12,7 @@ public class PruneService : IPruneService
     private readonly IRetentionSorterFactory retentionSorterFactory;
     private readonly PruneOptions options;
 
+    /// <summary>Initializes a new instance of the <see cref="PruneService"/> class</summary>
     public PruneService(IConsoleLogger logger, IDirectoryService directoryService, IRetentionSorterFactory retentionSorterFactory, PruneOptions options)
     {
         logger.LogTrace($"Constructing {nameof(PruneService)}");
@@ -20,6 +23,7 @@ public class PruneService : IPruneService
         this.options = options;
     }
 
+    /// <inheritdoc/>
     public void PruneFiles()
     {
         logger.LogTrace($"Entering {nameof(PruneService)}.{nameof(PruneFiles)}");
@@ -30,7 +34,7 @@ public class PruneService : IPruneService
             return;
         }
 
-        IEnumerable<FileInfo> files = directoryService.GetFiles();
+        IEnumerable<IFileInfo> files = directoryService.GetFiles();
         if (!files.Any())
         {
             return;
@@ -43,7 +47,7 @@ public class PruneService : IPruneService
             .KeepWeekly(options.KeepWeeklyCount)
             .KeepMonthly(options.KeepMonthlyCount)
             .KeepYearly(options.KeepYearlyCount)
-            .PruneExpired()
+            .PruneRemaining()
             .Result;
 
         LogWhenExpectedNotFound(LabelConstant.KeepLast, options.KeepLastCount, result.Last.Count);
@@ -53,7 +57,7 @@ public class PruneService : IPruneService
         LogWhenExpectedNotFound(LabelConstant.KeepMonthly, options.KeepMonthlyCount, result.Monthly.Count);
         LogWhenExpectedNotFound(LabelConstant.KeepYearly, options.KeepYearlyCount, result.Yearly.Count);
 
-        directoryService.DeleteFiles(result.Prune);
+        directoryService.DeleteFiles(result.Unmatched);
     }
 
     private void LogWhenExpectedNotFound(string label, uint expected, int found)

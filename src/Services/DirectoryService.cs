@@ -1,8 +1,10 @@
-﻿using BinaryPatrick.Prune.Models;
-using System.Text;
+﻿using System.Text;
+using BinaryPatrick.Prune.Models;
+using Microsoft.Extensions.FileProviders;
 
 namespace BinaryPatrick.Prune.Services;
 
+/// <inheritdoc cref="IDirectoryService"/>
 public class DirectoryService : IDirectoryService
 {
     private static readonly EnumerationOptions fileEnumerationOptions = GetDefaultEnumerationOptions();
@@ -10,6 +12,7 @@ public class DirectoryService : IDirectoryService
     private readonly IConsoleLogger logger;
     private readonly PruneOptions options;
 
+    /// <summary>Initializes a new instance of the <see cref="DirectoryService"/> class</summary>
     public DirectoryService(IConsoleLogger logger, PruneOptions options)
     {
         logger.LogTrace($"Constructing {nameof(DirectoryService)}");
@@ -18,15 +21,16 @@ public class DirectoryService : IDirectoryService
         this.options = options;
     }
 
-    public IEnumerable<FileInfo> GetFiles()
+    /// <inheritdoc/>
+    public IEnumerable<IFileInfo> GetFiles()
     {
         logger.LogTrace($"Entering {nameof(DirectoryService)}.{nameof(GetFiles)}");
 
         logger.LogInformation($"Searching {options.Path}");
 
         string searchPattern = GetSearchPattern(options.FilePrefix, options.FileExtension);
-        List<FileInfo> files = Directory.GetFiles(options.Path!, searchPattern, fileEnumerationOptions)
-            .Select(x => new FileInfo(x))
+        List<IFileInfo> files = Directory.GetFiles(options.Path!, searchPattern, fileEnumerationOptions)
+            .Select(x => new FileInfo(x).ToIFileInfo())
             .ToList();
 
         if (files.Count == 0)
@@ -39,6 +43,40 @@ public class DirectoryService : IDirectoryService
         return files;
     }
 
+
+    /// <inheritdoc/>
+    public void DeleteFiles(IEnumerable<IFileInfo> files)
+    {
+        logger.LogTrace($"Entering {nameof(DirectoryService)}.{nameof(DeleteFiles)}");
+
+        logger.LogWarning($"{files.Count()} files marked for pruning");
+
+        if (options.IsDryRun)
+        {
+            logger.LogWarning("Dry Run; No Files Pruned");
+            return;
+        }
+
+        if (!files.Any(x => x.Exists))
+        {
+            return;
+        }
+
+        foreach (IFileInfo file in files)
+        {
+            if (file.PhysicalPath is null)
+            {
+                continue;
+            }
+
+            File.Delete(file.PhysicalPath);
+            logger.LogVerbose($"{file.Name} pruned");
+        }
+
+        logger.LogCritical($"{files.Count()} files pruned");
+    }
+
+    /// <inheritdoc/>
     public void CreateFiles()
     {
         logger.LogTrace($"Entering {nameof(DirectoryService)}.{nameof(CreateFiles)}");
@@ -63,32 +101,6 @@ public class DirectoryService : IDirectoryService
         logger.LogVerbose($"{range.Count} files created");
     }
 
-    public void DeleteFiles(IEnumerable<FileInfo> files)
-    {
-        logger.LogTrace($"Entering {nameof(DirectoryService)}.{nameof(DeleteFiles)}");
-
-        logger.LogWarning($"{files.Count()} files marked for pruning");
-
-        if (options.IsDryRun)
-        {
-            logger.LogWarning("Dry Run; No Files Pruned");
-            return;
-        }
-
-        if (!files.Any())
-        {
-            return;
-        }
-
-        foreach (FileInfo file in files)
-        {
-            File.Delete(file.FullName);
-            logger.LogVerbose($"{file.Name} pruned");
-        }
-
-        logger.LogCritical($"{files.Count()} files pruned");
-    }
-
     private static string GetSearchPattern(string? prefix, string? extension)
     {
         StringBuilder searchPattern = new StringBuilder();
@@ -107,13 +119,10 @@ public class DirectoryService : IDirectoryService
         return searchPattern.ToString();
     }
 
-    private static EnumerationOptions GetDefaultEnumerationOptions()
+    private static EnumerationOptions GetDefaultEnumerationOptions() => new EnumerationOptions
     {
-        return new EnumerationOptions
-        {
-            AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
-            MatchType = MatchType.Simple,
-            IgnoreInaccessible = true,
-        };
-    }
+        AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
+        MatchType = MatchType.Simple,
+        IgnoreInaccessible = true,
+    };
 }

@@ -1,12 +1,28 @@
-﻿namespace BinaryPatrick.Prune.Models;
+﻿using Microsoft.Extensions.FileProviders;
 
+namespace BinaryPatrick.Prune.Models;
+
+/// <inheritdoc cref="IRetentionSortResult"/>
 public class RetentionSortResult : IRetentionSortResult
 {
-    public List<FileInfo> Prune { get; } = new List<FileInfo>();
-    public List<FileInfo> Last { get; } = new List<FileInfo>();
-    public List<FileInfo> Hourly { get; } = new List<FileInfo>();
-    public List<FileInfo> Daily { get; } = new List<FileInfo>();
-    public List<FileInfo> Weekly { get; } = new List<FileInfo>();
-    public List<FileInfo> Monthly { get; } = new List<FileInfo>();
-    public List<FileInfo> Yearly { get; } = new List<FileInfo>();
+    /// <inheritdoc/>
+    public List<IFileInfo> Unmatched { get; } = new List<IFileInfo>();
+
+    /// <inheritdoc/>
+    public List<IFileInfo> Last { get; } = new List<IFileInfo>();
+
+    /// <inheritdoc/>
+    public List<IFileInfo> Hourly { get; } = new List<IFileInfo>();
+
+    /// <inheritdoc/>
+    public List<IFileInfo> Daily { get; } = new List<IFileInfo>();
+
+    /// <inheritdoc/>
+    public List<IFileInfo> Weekly { get; } = new List<IFileInfo>();
+
+    /// <inheritdoc/>
+    public List<IFileInfo> Monthly { get; } = new List<IFileInfo>();
+
+    /// <inheritdoc/>
+    public List<IFileInfo> Yearly { get; } = new List<IFileInfo>();
 }

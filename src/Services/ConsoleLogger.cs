@@ -3,72 +3,61 @@ using BinaryPatrick.Prune.Models.Constants;
 
 namespace BinaryPatrick.Prune.Services;
 
+/// <inheritdoc cref="IConsoleLogger"/>
 public class ConsoleLogger : IConsoleLogger
 {
     private readonly PruneOptions options;
 
+    /// <summary>Initializes a new instance of the <see cref="ConsoleLogger"/> class</summary>
     public ConsoleLogger(PruneOptions options)
     {
         this.options = options;
         LogTrace($"Constructing {nameof(ConsoleLogger)}");
     }
 
+    /// <inheritdoc/>
     public void LogInformation(string text)
     {
-        if (options.IsSilent)
+        if (!options.IsSilent)
         {
-            return;
+            Console.WriteLine(text);
         }
-
-        Console.WriteLine(text);
     }
 
+    /// <inheritdoc/>
     public void LogWarning(string text)
     {
-        if (options.IsSilent)
+        if (!options.IsSilent)
         {
-            return;
+            Log(ConsoleColorConstants.Warning, text);
         }
-
-        Log(ConsoleColorConstants.Warning, text);
-
     }
 
+    /// <inheritdoc/>
     public void LogCritical(string text)
     {
-        if (options.IsSilent)
+        if (!options.IsSilent)
         {
-            return;
+            Log(ConsoleColorConstants.Critical, text);
         }
-
-        Log(ConsoleColorConstants.Critical, text);
-
     }
 
+    /// <inheritdoc/>
     public void LogVerbose(string text)
     {
-        if (options.IsSilent || !options.IsVerbose)
+        if (options.IsVerbose && !options.IsSilent)
         {
-            return;
+            Log(ConsoleColorConstants.Debug, text);
         }
-
-        Log(ConsoleColorConstants.Debug, text);
     }
 
+    /// <inheritdoc/>
     public void LogTrace(string text)
     {
-        if (!options.IsTrace)
+        if (options.IsTrace)
         {
-            return;
+            Log(ConsoleColorConstants.Trace, text);
         }
-
-        Log(ConsoleColorConstants.Trace, text);
-    }
-
-    private void Log(ConsoleColor foregroundColor, string format, params object?[] args)
-    {
-        string text = string.Format(format, args);
-        Log(foregroundColor, text);
     }
 
     private void Log(ConsoleColor foregroundColor, string text)
