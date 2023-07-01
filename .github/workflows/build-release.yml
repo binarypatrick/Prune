@@ -13,15 +13,15 @@ jobs:
       - name: Package linux-x64
         run: |
           dotnet publish ./src --runtime linux-x64 --self-contained -p:PublishSingleFile=true -c Release -o ./out/linux-x64
-          tar -czf ./out/prune-linux-x64.tar.gz ./out/linux-x64
+          tar -czf ./out/prune-linux-x64.tar.gz ./out/linux-x64/ -C .
       - name: Package linux-arm64
         run: |
           dotnet publish ./src --runtime linux-arm64 --self-contained -p:PublishSingleFile=true -c Release -o ./out/linux-arm64
-          tar -czf ./out/prune-linux-arm64.tar.gz ./out/linux-arm64
+          tar -czf ./out/prune-linux-arm64.tar.gz ./out/linux-arm64/ -C .
       - name: Package win-x64
         run: |
           dotnet publish ./src --runtime win-x64 --self-contained -p:PublishSingleFile=true -c Release -o ./out/win-x64
-          zip ./out/prune-win-x64.zip ./out/win-x64
+          cd ./out/win-x64 && zip -r ../prune-win-x64.zip .
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
