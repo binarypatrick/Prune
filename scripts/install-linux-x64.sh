@@ -6,3 +6,4 @@ curl -s -L -o prune-linux-x64.tar.gz $GITHUB_URL
 tar xzf prune-linux-x64.tar.gz ./prune
 install -Dm 755 prune -t /usr/local/bin
 rm prune prune-linux-x64.tar.gz
+echo "Prune Installed!"
