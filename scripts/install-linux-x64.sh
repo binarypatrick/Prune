@@ -2,7 +2,7 @@ GITHUB_LATEST_VERSION=$(curl -L -s -H 'Accept: application/json' https://github.
 GITHUB_FILE="prune-linux-x64.tar.gz"
 GITHUB_URL="https://github.com/BinaryPatrick/Prune/releases/download/${GITHUB_LATEST_VERSION}/${GITHUB_FILE}"
 
-curl -L -o prune-linux-x64.tar.gz $GITHUB_URL
-tar xzvf prune-linux-x64.tar.gz ./prune
+curl -s -L -o prune-linux-x64.tar.gz $GITHUB_URL
+tar xzf prune-linux-x64.tar.gz ./prune
 install -Dm 755 prune -t /usr/local/bin
 rm prune prune-linux-x64.tar.gz
