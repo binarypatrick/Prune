@@ -89,9 +89,10 @@ public class DirectoryService : IDirectoryService
         logger.LogInformation($"Creating {range.Count} files between {range.First().Timestamp:s} and {range.Last().Timestamp:s}");
 
         string prefix = Guid.NewGuid().ToString("N")[..6];
+        string fileExtension = options.FileExtension ?? "tar.gz";
         foreach ((string row, DateTime timestamp) in range)
         {
-            string filename = $"{options.Path}{prefix}_{timestamp:yyyyMMdd_HHmmss}.txt";
+            string filename = $"{options.Path}{prefix}_{timestamp:yyyyMMdd_HHmmss}.{fileExtension}";
             File.Create(filename).Dispose();
             File.SetLastWriteTime(filename, timestamp);
 

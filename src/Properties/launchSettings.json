@@ -2,7 +2,7 @@
   "profiles": {
     "BinaryPatrick.Prune": {
       "commandName": "Project",
-      "commandLineArgs": ""
+      "commandLineArgs": "--path ./ --keep-last 0 --create-files 15"
     }
   }
 }
