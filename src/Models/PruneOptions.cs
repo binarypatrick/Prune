@@ -49,38 +49,38 @@ public class PruneOptions
     /// <summary>
     /// Number of archives to keep at a minimum
     /// </summary>
-    [Option('l', "keep-last", Required = false, HelpText = "Number of archives to keep at a minimum", Default = (uint)5)]
-    public uint KeepLastCount { get; set; } = 5;
+    [Option('l', "keep-last", Required = false, HelpText = "Number of archives to keep at a minimum", Group = "retention")]
+    public uint KeepLastCount { get; set; }
 
     /// <summary>
     /// Number of hourly archives to keep
     /// </summary>
-    [Option('h', "keep-hourly", Required = false, HelpText = "Number of hourly archives to keep", Default = (uint)0)]
-    public uint KeepHourlyCount { get; set; } = 0;
+    [Option('h', "keep-hourly", Required = false, HelpText = "Number of hourly archives to keep", Group = "retention")]
+    public uint KeepHourlyCount { get; set; }
 
     /// <summary>
     /// Number of daily archives to keep
     /// </summary>
-    [Option('d', "keep-daily", Required = false, HelpText = "Number of daily archives to keep", Default = (uint)0)]
-    public uint KeepDailyCount { get; set; } = 0;
+    [Option('d', "keep-daily", Required = false, HelpText = "Number of daily archives to keep", Group = "retention")]
+    public uint KeepDailyCount { get; set; }
 
     /// <summary>
     /// Number of weekly archives to keep
     /// </summary>
-    [Option('w', "keep-weekly", Required = false, HelpText = "Number of weekly archives to keep", Default = (uint)0)]
-    public uint KeepWeeklyCount { get; set; } = 0;
+    [Option('w', "keep-weekly", Required = false, HelpText = "Number of weekly archives to keep", Group = "retention")]
+    public uint KeepWeeklyCount { get; set; }
 
     /// <summary>
     /// Number of monthly archives to keep
     /// </summary>
-    [Option('m', "keep-monthly", Required = false, HelpText = "Number of monthly archives to keep", Default = (uint)0)]
-    public uint KeepMonthlyCount { get; set; } = 0;
+    [Option('m', "keep-monthly", Required = false, HelpText = "Number of monthly archives to keep", Group = "retention")]
+    public uint KeepMonthlyCount { get; set; }
 
     /// <summary>
     /// Number of yearly archives to keep
     /// </summary>
-    [Option('y', "keep-yearly", Required = false, HelpText = "Number of yearly archives to keep", Default = (uint)0)]
-    public uint KeepYearlyCount { get; set; } = 0;
+    [Option('y', "keep-yearly", Required = false, HelpText = "Number of yearly archives to keep", Group = "retention")]
+    public uint KeepYearlyCount { get; set; }
 
     #endregion
 

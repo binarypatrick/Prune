@@ -1,8 +1,8 @@
-﻿using BinaryPatrick.Prune.Models;
+﻿using System.Reflection;
+using BinaryPatrick.Prune.Models;
 using BinaryPatrick.Prune.Models.Constants;
 using CommandLine;
 using FluentAssertions;
-using System.Reflection;
 using Xunit;
 
 namespace BinaryPatrick.Prune.Unit.Tests;
@@ -136,7 +136,7 @@ public class PruneOptionsTests
         pathAttribute!.LongName.Should().Be("keep-last");
         pathAttribute!.Required.Should().BeFalse();
         pathAttribute!.HelpText.Should().NotBeNullOrEmpty();
-        pathAttribute!.Default.Should().Be(5);
+        pathAttribute!.Default.Should().BeNull();
     }
 
     [Fact]
@@ -154,7 +154,7 @@ public class PruneOptionsTests
         pathAttribute!.LongName.Should().Be("keep-hourly");
         pathAttribute!.Required.Should().BeFalse();
         pathAttribute!.HelpText.Should().NotBeNullOrEmpty();
-        pathAttribute!.Default.Should().Be(0);
+        pathAttribute!.Default.Should().BeNull();
     }
 
     [Fact]
@@ -172,7 +172,7 @@ public class PruneOptionsTests
         pathAttribute!.LongName.Should().Be("keep-daily");
         pathAttribute!.Required.Should().BeFalse();
         pathAttribute!.HelpText.Should().NotBeNullOrEmpty();
-        pathAttribute!.Default.Should().Be(0);
+        pathAttribute!.Default.Should().BeNull();
     }
 
     [Fact]
@@ -190,7 +190,7 @@ public class PruneOptionsTests
         pathAttribute!.LongName.Should().Be("keep-weekly");
         pathAttribute!.Required.Should().BeFalse();
         pathAttribute!.HelpText.Should().NotBeNullOrEmpty();
-        pathAttribute!.Default.Should().Be(0);
+        pathAttribute!.Default.Should().BeNull();
     }
 
     [Fact]
@@ -208,7 +208,7 @@ public class PruneOptionsTests
         pathAttribute!.LongName.Should().Be("keep-monthly");
         pathAttribute!.Required.Should().BeFalse();
         pathAttribute!.HelpText.Should().NotBeNullOrEmpty();
-        pathAttribute!.Default.Should().Be(0);
+        pathAttribute!.Default.Should().BeNull();
     }
 
     [Fact]
@@ -226,6 +226,6 @@ public class PruneOptionsTests
         pathAttribute!.LongName.Should().Be("keep-yearly");
         pathAttribute!.Required.Should().BeFalse();
         pathAttribute!.HelpText.Should().NotBeNullOrEmpty();
-        pathAttribute!.Default.Should().Be(0);
+        pathAttribute!.Default.Should().BeNull();
     }
 }
