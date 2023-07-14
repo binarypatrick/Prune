@@ -60,11 +60,10 @@ public class ConsoleLogger : IConsoleLogger
         }
     }
 
-    private void Log(ConsoleColor foregroundColor, string text)
+    public static void Log(ConsoleColor foregroundColor, string text)
     {
-        ConsoleColor initialColor = Console.ForegroundColor;
         Console.ForegroundColor = foregroundColor;
         Console.WriteLine(text);
-        Console.ForegroundColor = initialColor;
+        Console.ResetColor();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BinaryPatrick.Prune.Models;
+using BinaryPatrick.Prune.Services;
 using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,7 +20,19 @@ public class Program
                     .BuildServiceProvider();
 
                 IPruneService service = services.GetRequiredService<IPruneService>();
-                service.PruneFiles();
+
+                try
+                {
+                    service.PruneFiles();
+                }
+                catch (Exception ex)
+                {
+                    ConsoleLogger.Log(ConsoleColor.Red, ex.Message);
+                    if (options.IsVerbose)
+                    {
+                        ConsoleLogger.Log(ConsoleColor.Red, ex.ToString());
+                    }
+                }
             });
     }
 }

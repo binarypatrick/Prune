@@ -43,7 +43,6 @@ public class DirectoryService : IDirectoryService
         return files;
     }
 
-
     /// <inheritdoc/>
     public void DeleteFiles(IEnumerable<IFileInfo> files)
     {
