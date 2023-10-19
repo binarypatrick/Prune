@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Package linux-x64
         run: |
           dotnet publish ./src --runtime linux-x64 --self-contained -p:PublishSingleFile=true -c Release -o ./out/linux-x64
