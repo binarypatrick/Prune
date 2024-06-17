@@ -31,4 +31,4 @@ jobs:
           omitBody: true
           allowUpdates: true
           generateReleaseNotes: true
-          artifacts: "out/prune-win-x64.tar.gz,out/prune-linux-x64.tar.gz,out/prune-linux-arm64.tar.gz"
+          artifacts: "out/prune-linux-arm64.tar.gz,out/prune-linux-x64.tar.gz,out/prune-win-x64.zip"
