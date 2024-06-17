@@ -8,6 +8,7 @@ jobs:
   release:
     permissions:
      attestations: write
+     contents: write
     name: Release
     runs-on: ubuntu-latest
     steps:
@@ -25,35 +26,9 @@ jobs:
         run: |
           dotnet publish ./src --runtime win-x64 --self-contained -p:PublishSingleFile=true -c Release -o ./out/win-x64
           cd ./out/win-x64 && zip -r ../prune-win-x64.zip .
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: true
-          prerelease: false
-      - name: Upload Asset prune-linux-x64.tar.gz
-        id: upload-release-asset-linux-x64
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./out/prune-linux-x64.tar.gz
-          asset_name: prune-linux-x64.tar.gz
-          asset_content_type: application/gzip
-      - name: Upload Asset prune-linux-arm64.tar.gz
-        id: upload-release-asset-linux-arm64
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./out/prune-linux-arm64.tar.gz
-          asset_name: prune-linux-arm64.tar.gz
-          asset_content_type: application/gzip
-      - name: Upload Asset prune-win-x64.zip
-        id: upload-release-asset-win-x64
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./out/prune-win-x64.zip
-          asset_name: prune-win-x64.zip
-          asset_content_type: application/zip
+          omitBody: true
+          allowUpdates: true
+          generateReleaseNotes: true
+          artifacts: "out/prune-win-x64.tar.gz,out/prune-linux-x64.tar.gz,out/prune-linux-arm64.tar.gz"
