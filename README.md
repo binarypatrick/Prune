@@ -60,7 +60,7 @@ The backups are designed to follow the same logic as Proxmox Backup Server pruni
 
 To build from source, you will need to have:
 
-- [DotNet SDK for .Net 7.0](https://dotnet.microsoft.com/en-us/download)
+- [DotNet SDK for .Net 8.0](https://dotnet.microsoft.com/en-us/download)
 - Git
 
 Pull down this repo and you can compile the project from the `src/` folder.
