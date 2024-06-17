@@ -21,7 +21,7 @@ public class RetentionSorter : IRetentionSorter, IInitializedRetentionSorter, IL
         logger.LogTrace($"Constructing {nameof(RetentionSorter)}");
 
         this.logger = logger;
-        lastTimestamp = DateTime.MinValue;
+        lastTimestamp = DateTimeOffset.MinValue;
         enumerator = files
             .OrderByDescending(x => x.LastModified)
             .GetEnumerator();
