@@ -8,7 +8,7 @@ Any file type can be an archive and prune allows you to specify which files are 
 
 ## Disclaimer
 
-The purpose of this tool is to **DELETE** files. Please take care when using it and ensure you do not delete the wrong files. I highly recommend using the `--verbose` and `--dry-run` flags until your are sure what will be pruned. This tool is provided without a warranty of any kind.
+The purpose of this tool is to **DELETE** files. Please take care when using it and ensure you do not delete the wrong files. I highly recommend using the `--verbose` and `--dry-run` flags until your are sure what will be pruned. This tool is provided without warranty of any kind.
 
 ## Usage
 
