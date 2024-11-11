@@ -43,9 +43,9 @@ prune --path /backups/images -e img -l 5 -d 3 -w 2 -m 4
 | -e, --ext          | File extension to use when matching archives, i.e. img, txt, tar.gz (do not include dot) |
 | -l, --keep-last    | (Default: 5) Number of archives to keep at a minimum                                     |
 | -h, --keep-hourly  | (Default: 0) Number of hourly archives to keep                                           |
-| -d, --keep-daily   | (Default: 0) Number of hourly archives to keep                                           |
-| -w, --keep-weekly  | (Default: 0) Number of hourly archives to keep                                           |
-| -m, --keep-monthly | (Default: 0) Number of hourly archives to keep                                           |
+| -d, --keep-daily   | (Default: 0) Number of daily archives to keep                                            |
+| -w, --keep-weekly  | (Default: 0) Number of weekly archives to keep                                           |
+| -m, --keep-monthly | (Default: 0) Number of monthly archives to keep                                          |
 | -y, --keep-yearly  | (Default: 0) Number of yearly archives to keep                                           |
 | --help             | Display this information                                                                 |
 | --version          | Display version information                                                              |
