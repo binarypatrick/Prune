@@ -1,5 +1,7 @@
 # Prune
 
+![a person in a purple shirt pulling old folders from a tree](docs/pruning-tree.png)
+
 [![Build & Test](https://github.com/BinaryPatrick/Prune/actions/workflows/build-test.yml/badge.svg?branch=main)](https://github.com/BinaryPatrick/Prune/actions/workflows/build-test.yml)
 
 Prune is a simple tool that lets you ~remove~ _prune_ archives in a folder, deleting any archives not matching the specified retention options.
@@ -29,9 +31,7 @@ prune --path /backups/images --verbose --dry-run /
 prune --path /backups/images -e img -l 5 -d 3 -w 2 -m 4
 ```
 
-
-> __Warning__ Use the `--verbose` and `--dry-run` flags until you confirm what will be pruned
-
+> **Warning** Use the `--verbose` and `--dry-run` flags until you confirm what will be pruned
 
 | Flag               | Description                                                                              |
 | ------------------ | ---------------------------------------------------------------------------------------- |
