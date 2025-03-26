@@ -4,7 +4,7 @@
 
 [![Build & Test](https://github.com/BinaryPatrick/Prune/actions/workflows/build-test.yml/badge.svg?branch=main)](https://github.com/BinaryPatrick/Prune/actions/workflows/build-test.yml)
 
-Prune is a simple tool that lets you ~remove~ _prune_ archives in a folder, deleting any archives not matching the specified retention options.
+Prune is a simple tool that lets you ~remove~ _prune_ files in a folder, deleting any files not matching the specified retention options.
 
 Any file type can be an archive and prune allows you to specify which files are in scope to be pruned. Prune is developed using .NET 8.0 and can be compiled for x64 (Windows, Linux, MacOS) and arm/arm64 (Raspberry Pi). So far it is running in the wild on a Debian 12 VM, a Raspberry Pi 4B 2GB and 4GB, and a Raspberry Pi 3B.
 
