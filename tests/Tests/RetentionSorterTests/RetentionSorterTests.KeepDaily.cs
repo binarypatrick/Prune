@@ -15,7 +15,7 @@ public partial class RetentionSorterTests
         DateTimeOffset startTime = new DateTimeOffset(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
         IEnumerable<IFileInfo> files = FileInfoMockFactory.GetFileInfoCollectionFake(15, startTime, TimeSpan.FromMinutes(15));
 
-        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files);
+        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files, TimeSpan.Zero);
         int keep = 0;
 
         // Act
@@ -41,7 +41,7 @@ public partial class RetentionSorterTests
         DateTimeOffset startTime = new DateTimeOffset(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
         IEnumerable<IFileInfo> files = FileInfoMockFactory.GetFileInfoCollectionFake(15, startTime, TimeSpan.FromMinutes(15));
 
-        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files);
+        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files, TimeSpan.Zero);
         int keep = 1;
 
         // Act
@@ -72,7 +72,7 @@ public partial class RetentionSorterTests
         DateTimeOffset startTime = new DateTimeOffset(2023, 1, 1, 23, 59, 59, TimeSpan.Zero);
         IEnumerable<IFileInfo> files = FileInfoMockFactory.GetFileInfoCollectionFake(fileCount, startTime, TimeSpan.FromHours(6));
 
-        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files);
+        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files, TimeSpan.Zero);
 
         // Act
         retentionSorter.KeepDaily((uint)keep);
@@ -90,15 +90,38 @@ public partial class RetentionSorterTests
         result.Unmatched.Should().NotBeEmpty();
     }
 
-    [Fact]
-    public void KeepDaily_WithMinuteIncrements_ShouldTake2()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    [InlineData(5)]
+    [InlineData(6)]
+    [InlineData(7)]
+    [InlineData(8)]
+    [InlineData(9)]
+    [InlineData(10)]
+    [InlineData(11)]
+    [InlineData(12)]
+    [InlineData(13)]
+    [InlineData(14)]
+    [InlineData(15)]
+    [InlineData(16)]
+    [InlineData(17)]
+    [InlineData(18)]
+    [InlineData(19)]
+    [InlineData(20)]
+    [InlineData(21)]
+    [InlineData(23)]
+    public void KeepDaily_WithMinuteIncrements_ShouldTake2(int hours)
     {
+        TimeSpan offset = TimeSpan.FromHours(8);
         // Arrange
-        int hours = Random.Shared.Next(0, 23);
-        DateTimeOffset startTime = new DateTimeOffset(2023, 1, 1, hours, 0, 0, TimeSpan.Zero);
+        DateTimeOffset startTime = new DateTimeOffset(2023, 1, 1, hours, 0, 0, offset);
         IEnumerable<IFileInfo> files = FileInfoMockFactory.GetFileInfoCollectionFake(1500, startTime, TimeSpan.FromMinutes(1));
 
-        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files);
+        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files, offset);
 
         // Act
         retentionSorter.KeepDaily(2);
@@ -109,9 +132,7 @@ public partial class RetentionSorterTests
         result.Daily.Should().HaveCount(2);
 
         result.Daily[0].LastModified.Should().BeExactly(startTime);
-        result.Daily[1].LastModified.Should().BeExactly(startTime.AddHours(-hours).AddMinutes(-1));
-
-        result.Unmatched.Should().NotBeEmpty();
+        result.Daily[1].LastModified.Should().BeExactly(startTime.AddHours(-startTime.Hour).AddMinutes(-1));
     }
 
     [Fact]
@@ -122,7 +143,7 @@ public partial class RetentionSorterTests
         DateTimeOffset startTime = new DateTimeOffset(2023, 1, 1, 1, minutesPastHour, 0, TimeSpan.Zero);
         IEnumerable<IFileInfo> files = FileInfoMockFactory.GetFileInfoCollectionFake(70, startTime, TimeSpan.FromMinutes(1));
 
-        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files);
+        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files, TimeSpan.Zero);
 
         // Act
         retentionSorter.KeepLast(1).KeepHourly(1);

@@ -7,12 +7,14 @@ namespace BinaryPatrick.Prune.Services;
 public class RetentionSorterFactory : IRetentionSorterFactory
 {
     private readonly IConsoleLogger logger;
+    private readonly PruneOptions options;
 
     /// <summary>Initializes a new instance of the <see cref="RetentionSorterFactory"/> class</summary>
-    public RetentionSorterFactory(IConsoleLogger logger)
+    public RetentionSorterFactory(IConsoleLogger logger, PruneOptions options)
     {
         logger.LogTrace($"Constructing {nameof(RetentionSorterFactory)}");
         this.logger = logger;
+        this.options = options;
     }
 
     /// <inheritdoc/>
@@ -20,6 +22,7 @@ public class RetentionSorterFactory : IRetentionSorterFactory
     {
         logger.LogTrace($"Entering {nameof(RetentionSorterFactory)}.{nameof(CreateRetentionSorter)}");
 
-        return new RetentionSorter(logger, files);
+        TimeSpan offset = options.UseUtc ? TimeZoneInfo.Utc.BaseUtcOffset : TimeZoneInfo.Local.BaseUtcOffset;
+        return new RetentionSorter(logger, files, offset);
     }
 }

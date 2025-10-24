@@ -22,7 +22,7 @@ public class DirectoryService : IDirectoryService
     }
 
     /// <inheritdoc/>
-    public IEnumerable<IFileInfo> GetFiles()
+    public ICollection<IFileInfo> GetFiles()
     {
         logger.LogTrace($"Entering {nameof(DirectoryService)}.{nameof(GetFiles)}");
 
