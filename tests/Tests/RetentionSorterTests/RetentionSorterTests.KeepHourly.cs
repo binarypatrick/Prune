@@ -15,7 +15,7 @@ public partial class RetentionSorterTests
         DateTimeOffset startTime = new DateTimeOffset(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
         IEnumerable<IFileInfo> files = FileInfoMockFactory.GetFileInfoCollectionFake(15, startTime, TimeSpan.FromMinutes(15));
 
-        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files);
+        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files, TimeSpan.Zero);
         int keep = 0;
 
         // Act
@@ -41,7 +41,7 @@ public partial class RetentionSorterTests
         DateTimeOffset startTime = new DateTimeOffset(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
         IEnumerable<IFileInfo> files = FileInfoMockFactory.GetFileInfoCollectionFake(15, startTime, TimeSpan.FromMinutes(15));
 
-        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files);
+        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files, TimeSpan.Zero);
         int keep = 1;
 
         // Act
@@ -72,7 +72,7 @@ public partial class RetentionSorterTests
         DateTimeOffset startTime = new DateTimeOffset(2023, 1, 1, 23, 59, 59, TimeSpan.Zero);
         IEnumerable<IFileInfo> files = FileInfoMockFactory.GetFileInfoCollectionFake(fileCount, startTime, TimeSpan.FromMinutes(15));
 
-        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files);
+        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files, TimeSpan.Zero);
 
         // Act
         retentionSorter.KeepHourly((uint)keep);
@@ -98,7 +98,7 @@ public partial class RetentionSorterTests
         DateTimeOffset startTime = new DateTimeOffset(2023, 1, 1, 1, minutes, 0, TimeSpan.Zero);
         IEnumerable<IFileInfo> files = FileInfoMockFactory.GetFileInfoCollectionFake(70, startTime, TimeSpan.FromMinutes(1));
 
-        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files);
+        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files, TimeSpan.Zero);
 
         // Act
         retentionSorter.KeepHourly(2);
@@ -122,7 +122,7 @@ public partial class RetentionSorterTests
         DateTimeOffset startTime = new DateTimeOffset(2023, 1, 1, 1, minutesPastHour, 0, TimeSpan.Zero);
         IEnumerable<IFileInfo> files = FileInfoMockFactory.GetFileInfoCollectionFake(70, startTime, TimeSpan.FromMinutes(1));
 
-        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files);
+        RetentionSorter retentionSorter = new RetentionSorter(consoleLoggerMock.Object, files, TimeSpan.Zero);
 
         // Act
         retentionSorter.KeepLast(1).KeepHourly(1);

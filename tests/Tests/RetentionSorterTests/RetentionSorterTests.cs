@@ -112,7 +112,7 @@ namespace BinaryPatrick.Prune.Unit.Tests
                         .Concat(result.Daily).Concat(result.Weekly)
                         .Concat(result.Monthly).Concat(result.Yearly);
 
-                    RetentionSorter sorter = new RetentionSorter(consoleLoggerMock.Object, retained);
+                    RetentionSorter sorter = new RetentionSorter(consoleLoggerMock.Object, retained, TimeSpan.Zero);
                     sorter.KeepLast((uint)keepLast).KeepHourly((uint)keepHourly)
                         .KeepDaily((uint)keepDaily).KeepWeekly((uint)keepWeekly)
                         .KeepMonthly((uint)keepMonthly).KeepYearly((uint)keepYearly);

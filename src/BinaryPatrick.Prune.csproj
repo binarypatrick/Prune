@@ -8,7 +8,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>prune</AssemblyName>
 	<Authors>BinaryPatrick</Authors>
-	<Copyright>Copyright 2023-2024</Copyright>
+	<Copyright>Copyright 2023-2025</Copyright>
 	<Version>1.1.0</Version>
   </PropertyGroup>
 
@@ -18,11 +18,11 @@
 
   <ItemGroup>
 	<PackageReference Include="CommandLineParser" Version="2.9.1" />
-	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
-	<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
-	<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="8.0.0" />
-	<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.10" />
+	<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="9.0.10" />
+	<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="9.0.10" />
+	<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.10" />
   </ItemGroup>
 
   <ItemGroup>

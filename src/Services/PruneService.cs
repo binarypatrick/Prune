@@ -34,8 +34,8 @@ public class PruneService : IPruneService
             return;
         }
 
-        IEnumerable<IFileInfo> files = directoryService.GetFiles();
-        if (!files.Any())
+        ICollection<IFileInfo> files = directoryService.GetFiles();
+        if (files.Count == 0)
         {
             return;
         }

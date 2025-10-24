@@ -33,6 +33,12 @@ public class PruneOptions
     /// </summary>
     [Option('s', "silent", Required = false, HelpText = "Disable all logging", SetName = OptionsSetName.LoggingSilent, Default = false)]
     public bool IsSilent { get; set; } = false;
+    
+    /// <summary>
+    /// Disables logging
+    /// </summary>
+    [Option('z', "utc", Required = false, HelpText = "Use UTC Timezone for evaluating file time", Default = false)]
+    public bool UseUtc { get; set; } = false;
 
     /// <summary>
     /// File name prefix to use when matching archives
@@ -43,7 +49,7 @@ public class PruneOptions
     /// <summary>
     /// File extension to use when matching archives
     /// </summary>
-    [Option('e', "ext", Required = false, HelpText = "File extension to use when matching archives, i.e. img, txt, tar.gz (do not include dot)")]
+    [Option('e', "ext", Required = false, HelpText = "File extension to use when matching archives, i.e. img, txt, tar.gz (do not include leading dot)")]
     public string? FileExtension { get; set; }
 
     /// <summary>

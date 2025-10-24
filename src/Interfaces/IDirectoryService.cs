@@ -8,7 +8,7 @@ public interface IDirectoryService
 {
     /// <summary>Retrieves files using the arguments provided for <see cref="PruneOptions.Path"/>, <see cref="PruneOptions.FilePrefix"/>, and <see cref="PruneOptions.FileExtension"/></summary>
     /// <returns>Files matching the search path and pattern</returns>
-    IEnumerable<IFileInfo> GetFiles();
+    ICollection<IFileInfo> GetFiles();
 
     /// <summary>Deletes the given files when <see cref="PruneOptions.IsDryRun"/> is <see langword="false"/></summary>
     /// <param name="files">Files to be deleted</param>
