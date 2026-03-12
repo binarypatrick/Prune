@@ -33,7 +33,7 @@ public class PruneOptions
     /// </summary>
     [Option('s', "silent", Required = false, HelpText = "Disable all logging", SetName = OptionsSetName.LoggingSilent, Default = false)]
     public bool IsSilent { get; set; } = false;
-    
+
     /// <summary>
     /// Disables logging
     /// </summary>
@@ -43,13 +43,13 @@ public class PruneOptions
     /// <summary>
     /// File name prefix to use when matching archives
     /// </summary>
-    [Option('p', "prefix", Required = false, HelpText = "File name prefix to use when matching archives")]
+    [Option('p', "prefix", Required = false, HelpText = "File name prefix to use when matching archives. Accepts wildcards (eg. \"backup??-*\")")]
     public string? FilePrefix { get; set; }
 
     /// <summary>
     /// File extension to use when matching archives
     /// </summary>
-    [Option('e', "ext", Required = false, HelpText = "File extension to use when matching archives, i.e. img, txt, tar.gz (do not include leading dot)")]
+    [Option('e', "ext", Required = false, HelpText = "File extension to use when matching archives, i.e. img, txt, tar.gz (do not include leading dot). Accepts wildcards (eg. \"i*.r??\")")]
     public string? FileExtension { get; set; }
 
     /// <summary>
